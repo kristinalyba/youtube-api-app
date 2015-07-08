@@ -25,4 +25,6 @@
 
         return $http.get(TMPLT_URL.replace("${clientId}", CLIENT_ID).replace());
     };
+    
+    
 }());
