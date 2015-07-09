@@ -6,17 +6,20 @@
 
     angular
         .module("common.services")
-        .factory("playListService", ["$resource",playListService]);
+        .factory("playlistResource", ["$resource",playlistResource]);
 
-    function playListService($resource){
+    function playlistResource($resource){
 
         var getPlaylists = function()
         {
             return $resource("https://www.googleapis.com/youtube/v3/playlists",{ part:snippet});
         }
 
-        return {getPlaylists: getPlaylists};
+        return {
+            getPlaylists: getPlaylists
+        };
     }
 }());
+
 
 
