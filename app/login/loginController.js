@@ -4,7 +4,7 @@
         "use strict";
         angular.module("ytApp").controller("LoginController", ["$state", "authorizationService", LoginController]);
 
-        function LoginController(authorizationService){
+        function LoginController($state, authorizationService){
             var vm = this;
 
             var tryLogIn = function(){
@@ -13,16 +13,16 @@
 
             var redirectUser = function(){
                 if(authorizationService.isLoggedIn){
-                    $state.go('home');
+                    $state.go('player');
                 }
                 else {
                     $state.go('login');
                 }
-            }
+            };
 
             vm.login = function(){
                 tryLogIn().then(redirectUser);
-            }
+            };
         };
 
     }());
