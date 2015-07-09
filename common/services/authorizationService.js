@@ -22,9 +22,14 @@
             return GData.getUser();
         };
 
+        var isLoggedIn = function(){
+            return GData.isLogin();
+        };
+
         return {
             login : login,
-            getUser : getUser
+            getUser : getUser,
+            isLoggedIn : isLoggedIn
         };
     }
 }());
