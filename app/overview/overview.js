@@ -4,10 +4,7 @@
     
     function OverViewController(ytApiService){
         var vm = this;
-                
-        ytApiService.then(function(data){
-            vm.auth = data;
-        })
+        ytApiService.login();
     };
     
 }());
