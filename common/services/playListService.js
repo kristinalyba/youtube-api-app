@@ -12,7 +12,7 @@
 
         var getPlaylists = function()
         {
-            return return $resource("https://www.googleapis.com/youtube/v3/playlists",{ part:snippet});
+            return $resource("https://www.googleapis.com/youtube/v3/playlists",{ part:snippet});
         }
 
         return {getPlaylists: getPlaylists};
