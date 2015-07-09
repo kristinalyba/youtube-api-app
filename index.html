@@ -10,25 +10,12 @@
     <!-- Style sheets -->
     <link rel="stylesheet" href="css/style.css">
     <link href="css/bootstrap.css" rel="stylesheet">
-
-    <!-- Library Scripts -->
-    <script src="js/jquery.js"></script>
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-google-gapi.js"></script>
-    <script src="js/bootstrap.js"></script>
-
-    <!-- Application Scripts -->
-    <script src="app/app.js"></script>
-
-    <!-- Services -->
-    <script src="common/services/ytApiService.js"></script>
-
-    <!-- Controllers -->
 </head>
 <body ng-app="ytApp">
 <nav class="nav navbar-inverse">
     <div class="container">
         <a class="navbar-brand" ui-sref="home">YouTube API App</a>
+
         <div class="navbar-header">
             <button type="button"
                     class="navbar-toggle"
@@ -55,5 +42,20 @@
 <div class="container">
     <div ui-view></div>
 </div>
+<!-- Library Scripts -->
+<script src="js/jquery.js"></script>
+<script src="js/https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+<script src="js/angular-google-gapi.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<!-- Application Scripts -->
+<script src="app/app.js"></script>
+
+<!-- Services -->
+<script src="common/services/common.services.js"></script>
+<script src="common/services/authorizationService.js"></script>
+
+<!-- Controllers -->
+<script src="app/overview/overview.js"></script>
 </body>
 </html>
