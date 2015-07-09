@@ -1,10 +1,10 @@
 (function(){
     "use strict";
-    angular.module("ytApp").controller("OverviewController", ["ytApiService", OverViewController]);
+    angular.module("ytApp").controller("OverviewController", ["authorizationService", OverViewController]);
     
-    function OverViewController(ytApiService){
+    function OverViewController(authorizationService){
         var vm = this;
-        ytApiService.login();
+        authorizationService.login();
     };
     
 }());
