@@ -20,16 +20,6 @@
                         templateUrl: "app/home/homeView.html",
                         controller: "HomeController",
                         controllerAs: "vm",
-                        resolve: {
-                            authorizationService: "authorizationService",
-                            state: "$state",
-                            user: function(authorizationService, $state){
-                                if(authorizationService.isLoggedIn())
-                                    return authorizationService.getUser().$promise;
-                                else
-                                    $state.go('login');
-                            }
-                        }
                     })
                         .state("home.player", {
                         url: "/player",
