@@ -2,9 +2,9 @@
     "use strict";
     angular
     .module("common.services")
-    .factory("authorizationService", ["$http", "GAuth", authorizationService]);
+    .factory("authorizationService", ["$http", "GAuth", "GData", authorizationService]);
 
-    function authorizationService($http, GAuth){
+    function authorizationService($http, GAuth, GData){
         var CLIENT_ID = '277572490754-mv9uu31naka02tfef9cv7kv6ntfqvioa.apps.googleusercontent.com';
         var AUTH_SCOPE = "https://www.googleapis.com/auth/youtube";
 
@@ -18,6 +18,13 @@
             });
         };
 
-        return {login : login};
+        var getUser = function(){
+            return GData.getUser();
+        };
+
+        return {
+            login : login,
+            getUser : getUser
+        };
     }
 }());

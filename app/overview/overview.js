@@ -4,7 +4,8 @@
     
     function OverViewController(authorizationService){
         var vm = this;
-        authorizationService.login();
+        authorizationService.login().then(function(){
+            vm.userInfo = authorizationService.getUser();
+        });
     };
-    
 }());
