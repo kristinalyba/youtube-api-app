@@ -4,7 +4,7 @@
     
     function OverViewController(ytApiService){
         var vm = this;
-        //ytApiService.login();
+        ytApiService.login();
     };
     
 }());

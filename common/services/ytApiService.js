@@ -10,6 +10,6 @@
 
         GAuth.setClient(CLIENT_ID);
         GAuth.setScope(AUTH_SCOPE);
-        return {login: GAuth.login()};
+        return {login: GAuth.login};
     }
 }());
