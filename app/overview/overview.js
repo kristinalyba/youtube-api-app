@@ -1,13 +1,11 @@
 (function(){
     "use strict";
-    angular.module("ytApp").controller("OverviewController", ["ytApiService", OverViewController]);
+    angular.module("ytApp").controller("OverviewController", [OverViewController]);
     
-    function OverViewController(ytApiService){
+    function OverViewController(){
         var vm = this;
                 
-        ytApiService.then(function(data){
-            vm.auth = data;
-        })
+
     };
     
 }());
