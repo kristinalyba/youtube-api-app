@@ -1,28 +1,61 @@
 <!doctype html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>YouTube API training app</title>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body ng-app="ytApp" ng-controller="OverviewController">
-        
-        <!-- Dependencies -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
-        <script src="js/angular-google-gapi.js"></script>
-        
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YouTube API training app</title>
 
-        <!-- App -->
-        <script src="app/app.js"></script>
-        
-        <!-- Services -->
-        <script src="common/services/common.services.js"></script>
-        <script src="common/services/authorizationService.js"></script>
-        
-        <!-- Controllers -->
-        <script src="app/overview/overview.js"></script>
-    </body>
+    <!-- Style sheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body ng-app="ytApp">
+<nav class="nav navbar-inverse">
+    <div class="container">
+        <a class="navbar-brand" ui-sref="home">YouTube API App</a>
+
+        <div class="navbar-header">
+            <button type="button"
+                    class="navbar-toggle"
+                    data-toggle="collapse"
+                    data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a ui-sref="search">Search</a></li>
+                <li><a ui-sref="player">Player</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a ui-sref="">User name<i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a ui-sref=""><i class="glyphicon glyphicon-off"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div ui-view></div>
+</div>
+<!-- Library Scripts -->
+<script src="js/jquery.js"></script>
+<script src="js/https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+<script src="js/angular-google-gapi.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<!-- Application Scripts -->
+<script src="app/app.js"></script>
+
+<!-- Services -->
+<script src="common/services/common.services.js"></script>
+<script src="common/services/authorizationService.js"></script>
+
+<!-- Controllers -->
+<script src="app/overview/overview.js"></script>
+</body>
 </html>
