@@ -2,9 +2,9 @@
     "use strict";
     (function(){
         "use strict";
-        angular.module("ytApp").controller("LoginController", ["$state", "authorizationService","playlistResource", LoginController]);
+        angular.module("ytApp").controller("LoginController", ["$state", "authorizationService", LoginController]);
 
-        function LoginController($state, authorizationService,playlistResource){
+        function LoginController($state, authorizationService){
             var vm = this;
 
             var tryLogIn = function(){
