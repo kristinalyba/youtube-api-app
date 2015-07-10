@@ -12,10 +12,7 @@
         GAuth.setScope(AUTH_SCOPE);
 
         function login(){
-            return GAuth.login().then(function(){
-                var token = GAuth.getToken().$$state.value.access_token;
-                $http.defaults.headers.common['Authorization'] = "Bearer " + token;
-            });
+            return GAuth.login().then(setAuthToken);
         };
 
         function getUser(){
@@ -34,12 +31,18 @@
             return GAuth.logout();
         };
 
+        function setAuthToken(){
+            var token = GAuth.getToken().$$state.value.access_token;
+            $http.defaults.headers.common['Authorization'] = "Bearer " + token;
+        };
+
         return {
             login : login,
             getUser : getUser,
             isLoggedIn : isLoggedIn,
             checkAuth : checkAuth,
-            logOut : logOut
+            logOut : logOut,
+            setAuthToken : setAuthToken
         }
     }
 }());

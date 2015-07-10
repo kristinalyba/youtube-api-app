@@ -26,18 +26,19 @@
                             authCheck: function(authorizationService, $state){
                                 return authorizationService
                                     .checkAuth()
-                                .then(function(){},
+                                .then(function(){
+                                    authorizationService
+                                        .setAuthToken();
+                                },
                                       function(){
-                                    $state.go('login')
+                                    $state.go('login');
                                 });
                             }
                     }
                 })
                 .state("home.player", {
                     url: "/player",
-                    templateUrl: "app/player/playerView.html",
-                    controller: "PlayerController",
-                    controllerAs: "vm"
+                    templateUrl: "app/player/playerView.html"
                 })
                 .state("home.search", {
                     url: "/search",
