@@ -10,7 +10,7 @@
 
     function playlistResource($resource) {
         return $resource(
-                "https://developers.google.com/youtube/v3/docs/channels",null
+                "https://content.googleapis.com/youtube/v3/playlists",null
                 ,
                 {
                     'get':    {method:'GET',params:{id:'@id'}},
