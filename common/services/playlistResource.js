@@ -1,3 +1,6 @@
+/**
+ * Created by a.ovsiannikov on 7/9/2015.
+ */
 (function(){
     "use strict";
 
@@ -12,10 +15,13 @@
                 {
                     'get':    {method:'GET',params:{id:'@id'}},
                     'save':   {method:'POST'},
-                    'query':  {method:'GET', params:{part: 'snippet', mine: 'true'}, withCredentials:true},
+                    'query':  {method:'GET', params:{part: 'snippet', mine: 'true', maxResults : 50}, withCredentials:true},
                     'remove': {method:'DELETE'},
                     'delete': {method:'DELETE'}
                 }
         );
     }
 }());
+
+
+
