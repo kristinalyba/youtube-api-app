@@ -13,9 +13,6 @@
 
             var redirectUser = function(){
                 if(authorizationService.isLoggedIn){
-                    var playlists = playlistResource.query(function(){
-                        console.log(playlists);
-                    });
                     $state.go('player');
                 }
                 else {
