@@ -6,10 +6,12 @@
 
     angular
         .module("ytApp")
-        .controller("HomeController", HomeController);
+        .controller("HomeController", ["playlistResource", HomeController]);
 
-    function HomeController() {
+    function HomeController(playlistResource) {
         var vm = this;
+        vm.playlists = [];
+        vm.selectedPlayList = {};
 
         vm.addToPlaylist = function(){
             //some logic
@@ -29,8 +31,16 @@
             {name: "pupies"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}
         ];
 
-        vm.playlists = [
-            {name: "Animals"}, {name: "Cars"}, {name: "Fails"}
-        ];
+        vm.changePlayList = function(playlist){
+            if(!vm.selectedPlayList || vm.selectedPlayList.id !== playlist.id){
+                vm.selectedPlayList = playlist;
+            }
+        }
+
+        playlistResource.query(function(data){
+            for(var i = 0; i < data.items.length; i++){
+                vm.playlists.push(data.items[i]);
+            }
+        });
     }
 }());

@@ -26,9 +26,12 @@
                             authCheck: function(authorizationService, $state){
                                 return authorizationService
                                     .checkAuth()
-                                .then(function(){},
+                                .then(function(){
+                                    authorizationService
+                                        .setAuthToken();
+                                },
                                       function(){
-                                    $state.go('login')
+                                    $state.go('login');
                                 });
                             }
                     }
