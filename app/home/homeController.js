@@ -12,6 +12,7 @@
         var vm = this;
         vm.playlists = [];
         vm.selectedPlayList = {};
+        vm.videos = [];
 
         vm.addToPlaylist = function(){
             //some logic
@@ -27,28 +28,7 @@
             return false;
         }
 
-        vm.videos = [
-            {name: "pupies"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}
-        ];
-
-/*
-        var playerList = playlistResource.query(
-            function()
-            {
-                console.log(playerList.items);
-                var items = playerList.items;
-                for(var item = 0; item < items.length; item++)
-                {
-                    var lists = playlistitemsResource.query({playlistId: items[item].id},function()
-                    {
-                        console.log(lists);
-                    });
-                }
-            }
-        );
-*/
-
-        vm.changePlayList = function(playlist){
+                vm.changePlayList = function(playlist){
             if(!vm.selectedPlayList || vm.selectedPlayList.id !== playlist.id){
                 vm.selectedPlayList = playlist;
             }
