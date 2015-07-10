@@ -26,10 +26,20 @@
             return GData.isLogin();
         };
 
+        function checkAuth(){
+            return GAuth.checkAuth();
+        };
+
+        function logOut(){
+            return GAuth.logout();
+        };
+
         return {
             login : login,
             getUser : getUser,
-            isLoggedIn : isLoggedIn
+            isLoggedIn : isLoggedIn,
+            checkAuth : checkAuth,
+            logOut : logOut
         }
     }
 }());

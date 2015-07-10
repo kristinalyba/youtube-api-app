@@ -13,7 +13,7 @@
 
             var redirectUser = function(){
                 if(authorizationService.isLoggedIn){
-                    $state.go('player');
+                    $state.go('home.player');
                 }
                 else {
                     $state.go('login');
