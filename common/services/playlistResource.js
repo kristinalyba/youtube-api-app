@@ -15,7 +15,7 @@
                 {
                     'get':    {method:'GET',params:{id:'@id'}},
                     'save':   {method:'POST'},
-                    'query':  {method:'GET', params:{part: 'contentDetails', mine: 'true'}, withCredentials:true},
+                    'query':  {method:'GET', params:{part: 'snippet', mine: 'true', maxResults : 50}, withCredentials:true},
                     'remove': {method:'DELETE'},
                     'delete': {method:'DELETE'}
                 }
