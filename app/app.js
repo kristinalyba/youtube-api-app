@@ -49,6 +49,5 @@
                     url: "/edit",
                     templateUrl: "app/edit/editView.html"
                 });
-            })
         }]);
 }());
