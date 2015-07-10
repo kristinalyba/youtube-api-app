@@ -5,6 +5,9 @@
 .playlist-control{
     width: 100%;
     margin-top: 10px;
+    max-height: 500px;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 .nested-view{
