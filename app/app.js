@@ -1,43 +1,45 @@
-(function(){
+(function () {
     "use strict";
     var app = angular.module("ytApp",
-                             ["common.services",
-                              "ui.router"
-                             ]);
+        ["common.services",
+            "ui.router"
+        ]);
 
     app.config(["$stateProvider", "$urlRouterProvider",
-                function($stateProvider, $urlRouterProvider){
-                    $stateProvider
-                        .state("login", {
-                        url: "/login",
-                        templateUrl: "app/login/loginView.html",
-                        controller: "LoginController",
-                        controllerAs: "vm"
-                    })
-                        .state("home", {
-                        abstract: true,
-                        url: "/",
-                        templateUrl: "app/home/homeView.html",
-                        controller: "HomeController",
-                        controllerAs: "vm",
-                    })
-                        .state("home.player", {
-                        url: "/player",
-                        templateUrl: "app/player/playerView.html"
+        function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise("/home/player");
 
-                    })
-                        .state("home.search", {
-                        url: "/search",
-                        templateUrl: "app/search/searchView.html"
+            $stateProvider
+                .state("login", {
+                    url: "/login",
+                    templateUrl: "app/login/loginView.html",
+                    controller: "LoginController",
+                    controllerAs: "vm"
+                })
+                .state("home", {
+                    abstract: true,
+                    url: "/home",
+                    templateUrl: "app/home/homeView.html",
+                    controller: "HomeController",
+                    controllerAs: "vm"
+                })
+                .state("home.player", {
+                    url: "/player",
+                    templateUrl: "app/player/playerView.html",
+                    controller: "PlayerController",
+                    controllerAs: "vm"
 
-                    })
-                        .state("home.edit", {
-                        url: "/edit",
-                        templateUrl: "app/edit/editView.html"
+                })
+                .state("home.search", {
+                    url: "/search",
+                    templateUrl: "app/search/searchView.html",
+                    controller: "SearchController",
+                    controllerAs: "vm"
 
-                    });
-
-                    $urlRouterProvider.otherwise("/");
-
-    }]);
+                })
+                .state("home.edit", {
+                    url: "/edit",
+                    templateUrl: "app/edit/editView.html"
+                });
+        }]);
 }());

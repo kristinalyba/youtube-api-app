@@ -1,0 +1,18 @@
+.playlist-dropdown {
+    width: 100%;
+}
+
+.playlist-control{
+    width: 100%;
+    margin-top: 10px;
+    max-height: 500px;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.nested-view{
+    width:100%;
+    height:500px;
+    background-color: #cccccc;
+    margin-top: 10px;
+}
