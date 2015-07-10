@@ -16,3 +16,10 @@
     background-color: #cccccc;
     margin-top: 10px;
 }
+
+.close-button{
+    background: transparent none repeat scroll 0% 0%;
+    border: 0px none;
+    padding: 0px;
+    outline: medium none;
+}

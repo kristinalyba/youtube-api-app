@@ -14,7 +14,7 @@
 <body ng-app="ytApp">
 <nav class="navbar navbar-inverse">
     <div class="container">
-        <a class="navbar-brand">YouTube API App</a>
+        <a class="navbar-brand" ui-sref="home.player">YouTube API App</a>
         <div class="navbar-header">
             <button type="button"
                     class="navbar-toggle"
@@ -28,8 +28,9 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a ui-sref="home.search">Search</a></li>
                 <li><a ui-sref="home.player">Player</a></li>
+                <li><a ui-sref="home.search">Search</a></li>
+                <li><a ui-sref="home.edit">Playlists</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a>User name<i class="glyphicon glyphicon-user"></i></a></li>

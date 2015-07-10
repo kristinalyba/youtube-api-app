@@ -1,7 +1,7 @@
 <div class="jumbotron">
     <div class="row">
         <div class="col-md-9">
-            <div class="input-group">
+            <div ng-show="vm.currentView() != 'home.edit'" class="input-group">
                 <input type="text" class="form-control" placeholder="Search for...">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
@@ -28,7 +28,9 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+                    <button class="btn btn-default" ng-click="vm.toggleEdit()">
+                        <span class="glyphicon glyphicon-list"></span>
+                    </button>
                 </div>
             </div>
         </div>
