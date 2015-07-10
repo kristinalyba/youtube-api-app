@@ -1,1 +1,21 @@
-<div class="nested-view">player view</div>
+<div class="player-container">
+    <div class="video-container">
+        <div class="">
+            <iframe src="https://www.youtube.com/embed/3ZqPaohVjmw" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="player-info">
+        <div class="player-info-header">
+            <div class="player-video-title">5 week old golden retriever puppies really mad when someone doesn't fill their pool!
+            </div>
+        </div>
+        <div class="player-add-btn" ng-hide="vm.isVideoInCurrentPlaylist()">
+            <button class="btn btn-primary pull-right" ng-click="vm.addToPlaylist()">Add to current playlist <span class="glyphicon glyphicon-plus"
+                                                                                     aria-hidden="true"></span></button>
+        </div>
+        <div class="player-rmv-btn" ng-show="vm.isVideoInCurrentPlaylist()">
+            <button class="btn btn-danger pull-right" ng-click="vm.removeFromPlaylist()">Remove from current playlist <span class="glyphicon glyphicon-minus"
+                                                                                                                          aria-hidden="true"></span></button>
+        </div>
+    </div>
+</div>

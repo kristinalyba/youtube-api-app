@@ -10,6 +10,21 @@
 
     function HomeController() {
         var vm = this;
+
+        vm.addToPlaylist = function(){
+            //some logic
+            alert("added");
+        }
+
+        vm.removeFromPlaylist = function(){
+            //some logic
+            alert("removed");
+        }
+
+        vm.isVideoInCurrentPlaylist = function(){
+            return false;
+        }
+
         vm.videos = [
             {name: "pupies"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}, {name: "kitties"}, {name: "parrots"}
         ];

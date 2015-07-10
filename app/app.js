@@ -35,9 +35,7 @@
                 })
                 .state("home.player", {
                     url: "/player",
-                    templateUrl: "app/player/playerView.html",
-                    controller: "PlayerController",
-                    controllerAs: "vm"
+                    templateUrl: "app/player/playerView.html"
                 })
                 .state("home.search", {
                     url: "/search",
@@ -49,6 +47,5 @@
                     url: "/edit",
                     templateUrl: "app/edit/editView.html"
                 });
-            })
         }]);
 }());
