@@ -12,10 +12,9 @@
     <link href="css/bootstrap.css" rel="stylesheet">
 </head>
 <body ng-app="ytApp">
-<nav class="nav navbar-inverse">
+<nav class="navbar navbar-inverse">
     <div class="container">
-        <a class="navbar-brand" ui-sref="home">YouTube API App</a>
-
+        <a class="navbar-brand">YouTube API App</a>
         <div class="navbar-header">
             <button type="button"
                     class="navbar-toggle"
@@ -29,12 +28,12 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a ui-sref="search">Search</a></li>
-                <li><a ui-sref="player">Player</a></li>
+                <li><a ui-sref="home.search">Search</a></li>
+                <li><a ui-sref="home.player">Player</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a ui-sref="">User name<i class="glyphicon glyphicon-user"></i></a></li>
-                <li><a ui-sref=""><i class="glyphicon glyphicon-off"></i></a></li>
+                <li><a>User name<i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a><i class="glyphicon glyphicon-off"></i></a></li>
             </ul>
         </div>
     </div>
@@ -43,8 +42,9 @@
     <div ui-view></div>
 </div>
 <!-- Library Scripts -->
-<script src="js/jquery.js"></script>
-<script src="js/https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
 <script src="js/angular-google-gapi.js"></script>
 <script src="js/bootstrap.js"></script>
 
@@ -56,6 +56,9 @@
 <script src="common/services/authorizationService.js"></script>
 
 <!-- Controllers -->
-<script src="app/overview/overview.js"></script>
+<script src="app/login/loginController.js"></script>
+<script src="app/home/homeController.js"></script>
+<script src="app/player/playerController.js"></script>
+<script src="app/search/searchController.js"></script>
 </body>
 </html>

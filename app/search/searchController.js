@@ -6,9 +6,9 @@
 
     angular
         .module("ytApp")
-        .controller("PlayerCtrl", PlayerCtrl);
+        .controller("SearchController", SearchController);
 
-    function PlayerCtrl(){
+    function SearchController(){
         var vm = this;
     }
 }());
