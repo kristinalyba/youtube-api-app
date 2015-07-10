@@ -6,9 +6,8 @@
         var vm = this;
         authorizationService.login().then(function(){
             vm.userInfo = authorizationService.getUser();
-            var playlists = playlistResource.query(function(){
-                console.log(playlists);
+            var playlists = playlistResource.query();
+
             });
-        });
-    };
+        };
 }());
