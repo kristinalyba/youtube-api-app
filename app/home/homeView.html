@@ -19,7 +19,11 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu playlist-dropdown" aria-labelledby="playlistDropdown">
-                            <li ng-repeat="playlist in vm.playlists"><a href="#">{{playlist.name}}</a></li>
+                            <li ng-repeat="playlist in vm.playlists">
+                                <a ng-click="vm.changePlayList(playlist)">
+                                    {{playlist.snippet.title}}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
