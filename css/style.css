@@ -10,6 +10,10 @@
     overflow-x:hidden;
 }
 
+.playlist-item{
+    width: 100%;
+}
+
 .player-video-title{
     font-size: 24px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
