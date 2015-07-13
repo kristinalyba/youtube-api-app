@@ -60,8 +60,6 @@
             return vm.currentView == 'home.edit';
         };
 
-        vm.removePlaylist = function(playlist){
 
-        };
     }
 }());

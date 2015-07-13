@@ -48,3 +48,11 @@
     padding: 0px;
     outline: medium none;
 }
+
+.h-center{
+    text-align: center;
+}
+
+.full-width{
+    width: 100%;
+}
