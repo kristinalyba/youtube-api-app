@@ -12,29 +12,25 @@
         var vm = this;
         vm.playlists = [];
         vm.selectedPlaylistId = '';
+        vm.selectedPlaylistItem = {};
 
         playlistResource.query(function (data) {
             for (var i = 0; i < data.items.length; i++) {
                 vm.playlists.push(data.items[i]);
                 vm.playlists[i].items = [];
             }
-            if(vm.playlists.length){
+            if (vm.playlists.length) {
                 vm.setCurrentPlaylist(vm.playlists[0]);
             }
         });
 
         function fillPlaylistWithVideos(playlist) {
-            playlistitemsResource.query({playlistId: playlist.id}, function (data) {
-                if(!vm.firstVideoLoaded && data.items.length > 0)
-                {
-                    var item = data.items[0].snippet;
-                    vm.srcVideo = 'https://www.youtube.com/embed/' + item.resourceId.videoId +  '?list=' + item.playlistId;// + '&autoplay=true';
-                    vm.firstVideoLoaded = true;
-                }
+            return playlistitemsResource.query({playlistId: playlist.id}, function (data) {
                 for (var i = 0; i < data.items.length; i++) {
                     playlist.items.push(data.items[i]);
                 }
-            });
+            }).$promise;
+
         }
 
         vm.getSpecificPlaylist = function (playlistId) {
@@ -61,12 +57,23 @@
         vm.setCurrentPlaylist = function (playlist) {
             if (!vm.selectedPlaylistId || vm.selectedPlaylistId !== playlist.id) {
                 vm.selectedPlaylistId = playlist.id;
-            }
-            if (playlist.items.length === 0) {
-                fillPlaylistWithVideos(playlist);
+                if(!playlist.items.length){
+                    fillPlaylistWithVideos(playlist)
+                        .then(function () {
+                            //add check if no videos in playlist
+                            vm.setCurrentPlaylistItem(playlist.items[0]);
+                        }
+                    );
+                } else {
+                    vm.setCurrentPlaylistItem(playlist.items[0]);
+                }
             }
         };
 
+        vm.setCurrentPlaylistItem = function(playlistItem){
+            vm.selectedPlaylistItem.title = playlistItem.snippet.title;
+            vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;// + '&autoplay=true';
+        }
         vm.currentView = function(){
             return $state.current.name;
         };
