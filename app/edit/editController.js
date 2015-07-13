@@ -45,13 +45,13 @@
             playlist.snippet.description = playlist.snippet.tempDescription;
             playlist.snippet.title = playlist.snippet.tempTitle;
             updatePlaylist(playlist);
-            vm.togglePlaylistEdit();
+            vm.togglePlaylistEdit(playlist);
         };
 
-        vm.playlistChangesReject = function(){
+        vm.playlistChangesReject = function(playlist){
             playlist.snippet.tempTitle = playlist.snippet.title;
             playlist.snippet.tempDescription = playlist.snippet.description;
-            vm.togglePlaylistEdit();
+            vm.togglePlaylistEdit(playlist);
         };
 
         var loadPlaylists = function(){
