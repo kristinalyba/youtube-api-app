@@ -40,3 +40,25 @@
     width: 100%;
     height: 100%;
 }
+
+.nested-view{
+    width:100%;
+    height:500px;
+    background-color: #cccccc;
+    margin-top: 10px;
+}
+
+.close-button{
+    background: transparent none repeat scroll 0% 0%;
+    border: 0px none;
+    padding: 0px;
+    outline: medium none;
+}
+
+.horizontal-center{
+    text-align: center;
+}
+
+.full-width{
+    width: 100%;
+}
