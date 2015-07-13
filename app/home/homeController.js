@@ -6,9 +6,9 @@
 
     angular
         .module("ytApp")
-        .controller("HomeController", ["playlistResource", "playlistitemsResource", HomeController]);
+        .controller("HomeController", ["playlistResource", "playlistitemsResource", "$state", HomeController]);
 
-    function HomeController(playlistResource, playlistitemsResource) {
+    function HomeController(playlistResource,playlistitemsResource, $state) {
         var vm = this;
         vm.playlists = [];
         vm.selectedPlaylistId = '';
@@ -74,5 +74,24 @@
             vm.selectedPlaylistItem.title = playlistItem.snippet.title;
             vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;// + '&autoplay=true';
         }
+        vm.currentView = function(){
+            return $state.current.name;
+        };
+        
+        var prevView;
+
+        vm.toggleEdit = function(){
+            if(isEditMode()){
+                $state.go(!prevView || prevView == 'home.edit' ? 'home.player' : prevView);
+            }
+            else{
+                prevView = vm.currentView();
+                $state.go('home.edit');
+            }
+        };
+
+        var isEditMode = function(){
+            return vm.currentView() == 'home.edit';
+        };
     }
 }());

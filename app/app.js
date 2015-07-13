@@ -55,7 +55,9 @@
                 })
                 .state("home.edit", {
                     url: "/edit",
-                    templateUrl: "app/edit/editView.html"
+                    templateUrl: "app/edit/editView.html",
+                    controller: "EditController",
+                    controllerAs: "vm"
                 });
         }]);
 }());
