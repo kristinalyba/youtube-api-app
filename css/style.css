@@ -11,6 +11,7 @@
 
 .playlist-item{
     width: 100%;
+    text-align: left;
 }
 
 .player-video-title{

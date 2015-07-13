@@ -11,7 +11,8 @@
             $sceDelegateProvider.resourceUrlWhitelist([
                 'self',
                 'https://www.youtube.com/**',
-                'https://youtu.be/**'
+                'https://youtu.be/**',
+                'https://accounts.google.com/**'
             ]);
 
             $urlRouterProvider.otherwise("/home/player");

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="css/bootstrap.css" rel="stylesheet">
 </head>
-<body ng-app="ytApp">
+<body ng-app="ytApp" ng-controller="MainController as vm">
 <nav class="navbar navbar-inverse">
     <div class="container">
         <a class="navbar-brand">YouTube API App</a>
@@ -26,14 +26,14 @@
                 <span class="icon-bar"></span>
             </button>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" ng-if="vm.isLoggedIn()">
             <ul class="nav navbar-nav">
                 <li><a ui-sref="home.search">Search</a></li>
                 <li><a ui-sref="home.player">Player</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a>User name<i class="glyphicon glyphicon-user"></i></a></li>
-                <li><a><i class="glyphicon glyphicon-off"></i></a></li>
+                <li><a href="{{vm.googleLogoutPath}}"><i class="glyphicon glyphicon-off"></i></a></li>
             </ul>
         </div>
     </div>
@@ -64,5 +64,8 @@
 <script src="app/login/loginController.js"></script>
 <script src="app/home/homeController.js"></script>
 <script src="app/search/searchController.js"></script>
+<script src="app/mainController.js"></script>
+
+<!--<iframe id="logoutframe" src="{{vm.logoutPath}}" style="display: none"></iframe>-->
 </body>
 </html>
