@@ -33,6 +33,7 @@
 
 
         vm.srcVideo = "//https://www.youtube.com/embed/3ZqPaohVjmw";
+        vm.firstVideoLoaded = false;
 
         vm.changePlayList = function(playlist){
             if(!vm.selectedPlayList || vm.selectedPlayList.id !== playlist.id){
@@ -43,17 +44,18 @@
         playlistResource.query(function(data){
             for(var i = 0; i < data.items.length; i++){
                 vm.playlists.push(data.items[i]);
-
+                if(!vm.firstVideoLoaded)
+                {
                     var lists = playlistitemsResource.query({playlistId: data.items[i].id},function(data)
                     {
-                        console.log(data);
                         if(data.items.length > 0)
                         {
                             var item = data.items[0].snippet;
                             vm.srcVideo = 'https://www.youtube.com/embed/' + item.resourceId.videoId +  '?list=' + item.playlistId;// + '&autoplay=true';
+                            vm.firstVideoLoaded = true;
                         }
-
                     });
+                }
             }
         });
     }
