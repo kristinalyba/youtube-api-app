@@ -3,7 +3,6 @@
 }
 
 .playlist-control{
-    width: 100%;
     margin-top: 10px;
     max-height: 500px;
     overflow-y:auto;
@@ -17,7 +16,7 @@
 .player-video-title{
     font-size: 24px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    mirgin: 10px;
+    margin: 10px;
 
 }
 
