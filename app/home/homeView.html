@@ -15,12 +15,12 @@
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle playlist-dropdown" type="button" id="playlistDropdown"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            PlayLists
+                            {{vm.getSpecificPlaylist(vm.selectedPlaylistId).snippet.title}}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu playlist-dropdown" aria-labelledby="playlistDropdown">
                             <li ng-repeat="playlist in vm.playlists">
-                                <a ng-click="vm.changePlayList(playlist)">
+                                <a ng-click="vm.setCurrentPlaylist(playlist)">
                                     {{playlist.snippet.title}}
                                 </a>
                             </li>
@@ -41,7 +41,7 @@
         </div>
         <div class="col-md-3">
             <ul class="list-group playlist-control">
-                <li class="list-group-item" ng-repeat="video in vm.videos"><a href="#">{{video.name}}</a></li>
+                <li class="list-group-item" ng-repeat="item in vm.getSpecificPlaylist(vm.selectedPlaylistId).items"><a href="#">{{item.snippet.title}}</a></li>
             </ul>
         </div>
     </div>
