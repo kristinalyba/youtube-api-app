@@ -6,7 +6,7 @@
 
     angular
         .module("ytApp")
-        .controller("HomeController",["playlistResource","playlistitemsResource", "$state", HomeController]);
+        .controller("HomeController", ["playlistResource", "playlistitemsResource", "$state", HomeController]);
 
     function HomeController(playlistResource,playlistitemsResource, $state) {
         var vm = this;
@@ -72,9 +72,10 @@
         };
         
         var prevView;
+
         vm.toggleEdit = function(){
             if(isEditMode()){
-                $state.go(prevView == 'home.edit' ? 'home.player' : prevView);
+                $state.go(!prevView || prevView == 'home.edit' ? 'home.player' : prevView);
             }
             else{
                 prevView = vm.currentView();
@@ -82,10 +83,8 @@
             }
         };
 
-        
-
         var isEditMode = function(){
-            return vm.currentView == 'home.edit';
+            return vm.currentView() == 'home.edit';
         };
     }
 }());
