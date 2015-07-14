@@ -13,6 +13,7 @@
         vm.playlists = [];
         vm.selectedPlaylistId = '';
         vm.selectedPlaylistItem = {};
+        vm.IsVideoInCurrentPlaylist = true;
 
         playlistResource.query(function (data) {
             for (var i = 0; i < data.items.length; i++) {
@@ -34,24 +35,63 @@
         }
 
         vm.getSpecificPlaylist = function (playlistId) {
-            return _.find(vm.playlists, function (playlist, index, array) {
+            return _.find(vm.playlists, function (playlist) {
                     return playlist.id === playlistId;
                 }
             );
         };
 
+        var reloadPlayListItem = function()
+        {
+            if(vm.selectedPlaylistId !== '')
+            {
+                var currentPlayListItem = vm.getSpecificPlaylist(vm.selectedPlaylistId);
+                if(currentPlayListItem)
+                {
+                    vm.selectedPlaylistId='';
+                    currentPlayListItem.items=[];
+                    vm.setCurrentPlaylist(currentPlayListItem);
+                }
+            }
+        };
+
         vm.addToPlaylist = function () {
-            //some logic
-            alert("added");
+            var newitem = new playlistitemsResource();
+            newitem.snippet = {};
+            newitem.snippet.playlistId = vm.selectedPlaylistId;
+            newitem.snippet.resourceId = { kind: "youtube#video" ,videoId: vm.selectedPlaylistItem.videoId};
+
+            playlistitemsResource.save(newitem, function() {
+                    reloadPlayListItem();
+                },function()
+                {
+                }
+            );
         };
 
         vm.removeFromPlaylist = function () {
-            //some logic
-            alert("removed");
+            var deleteItem = new playlistitemsResource();
+            deleteItem.id = vm.selectedPlaylistItem.id;
+            playlistitemsResource.delete(deleteItem, function() {
+                    reloadPlayListItem();
+                },function()
+                {
+                }
+            );
+
         };
 
-        vm.isVideoInCurrentPlaylist = function () {
-            return false;
+        var checkIsVideoInCurrentPlaylist = function () {
+            var result = true;
+            var currentPlayListItem = vm.getSpecificPlaylist(vm.selectedPlaylistId);
+            if(currentPlayListItem)
+            {
+
+                result = _.findIndex(currentPlayListItem.items, function (item) {
+                    return item.id === vm.selectedPlaylistItem.id;
+                }) >= 0 ;
+            }
+            vm.IsVideoInCurrentPlaylist = result;
         };
 
         vm.setCurrentPlaylist = function (playlist) {
@@ -71,9 +111,23 @@
         };
 
         vm.setCurrentPlaylistItem = function(playlistItem){
-            vm.selectedPlaylistItem.title = playlistItem.snippet.title;
-            vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;// + '&autoplay=true';
-        }
+            if(playlistItem)
+            {
+                vm.selectedPlaylistItem.title = playlistItem.snippet.title;
+                vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;// + '&autoplay=true';
+                vm.selectedPlaylistItem.videoId = playlistItem.snippet.resourceId.videoId;
+                vm.selectedPlaylistItem.id = playlistItem.id;
+            }
+            else
+            {
+                vm.selectedPlaylistItem.title = 'video not found';
+                vm.selectedPlaylistItem.src = '';
+                vm.selectedPlaylistItem.videoId = '';
+                vm.selectedPlaylistItem.id = '';
+            }
+            checkIsVideoInCurrentPlaylist();
+        };
+
         vm.currentView = function(){
             return $state.current.name;
         };
