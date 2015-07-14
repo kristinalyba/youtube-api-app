@@ -45,7 +45,7 @@
             alert("added");
         };
 
-        vm.removeFromPlaylist = function () {
+        vm.removeFromPlaylist = function (item) {
             //some logic
             alert("removed");
         };
