@@ -2,9 +2,9 @@
     "use strict";
     (function(){
         "use strict";
-        angular.module("ytApp").controller("LoginController", ["$state", "authorizationService", LoginController]);
+        angular.module("ytApp").controller("LoginController", ["$scope", "$state", "authorizationService", LoginController]);
 
-        function LoginController($state, authorizationService){
+        function LoginController($scope, $state, authorizationService){
             var vm = this;
 
             var tryLogIn = function(){
@@ -13,6 +13,7 @@
 
             var redirectUser = function(){
                 if(authorizationService.isLoggedIn){
+                    $scope.$parent.isLoggedIn = true;
                     $state.go('home.player');
                 }
                 else {

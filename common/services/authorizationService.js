@@ -7,6 +7,7 @@
     function authorizationService($http, GAuth, GData){
         var CLIENT_ID = '277572490754-mv9uu31naka02tfef9cv7kv6ntfqvioa.apps.googleusercontent.com';
         var AUTH_SCOPE = "https://www.googleapis.com/auth/youtube";
+        var revokeTokenUrl = "https://accounts.google.com/o/oauth2/revoke?token={token}";
 
         GAuth.setClient(CLIENT_ID);
         GAuth.setScope(AUTH_SCOPE);
@@ -28,7 +29,14 @@
         };
 
         function logOut(){
-            return GAuth.logout();
+            var token = GAuth.getToken().$$state.value.access_token;
+
+            return $http.jsonp(
+                revokeTokenUrl.replace("{token}", token),{
+                headers: {
+                   "content-type":"application/json",
+                    "Accept" : "application/json"
+                }});
         };
 
         function setAuthToken(){

@@ -6,14 +6,24 @@
 
     angular
         .module("ytApp")
-        .controller("MainController", ["authorizationService", MainController]);
+        .controller("MainController", ["$scope", "$state","authorizationService", MainController]);
 
-    function MainController(authorizationService) {
+    function MainController($scope, $state, authorizationService) {
         var vm = this;
+        $scope.isLoggedIn = false;
 
-        var appPath = "http://" + window.location.hostname + ":" + window.location.port + window.location.pathname;
-        vm.googleLogoutPath = "https://accounts.google.com/Logout?&continue=https://appengine.google.com/_ah/logout?continue=" + appPath;
+        authorizationService.checkAuth().then(function(){
+            $scope.isLoggedIn = true;
+        }, function(){
+            $scope.isLoggedIn = false;
+        });
 
-        vm.isLoggedIn = authorizationService.isLoggedIn;
+        vm.logOut = function () {
+            authorizationService.logOut()
+                .then(null, function (data) {
+                    $scope.isLoggedIn = false;
+                    $state.go('login');
+                });
+        }
     }
 }());
