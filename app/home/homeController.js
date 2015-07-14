@@ -69,7 +69,6 @@
             );
         };
 
-<<<<<<< HEAD
         vm.removeFromPlaylist = function () {
             var deleteItem = new playlistitemsResource();
             deleteItem.id = vm.selectedPlaylistItem.id;
@@ -80,11 +79,6 @@
                 }
             );
 
-=======
-        vm.removeFromPlaylist = function (item) {
-            //some logic
-            alert("removed");
->>>>>>> Added playlist item removal button
         };
 
         var checkIsVideoInCurrentPlaylist = function () {
