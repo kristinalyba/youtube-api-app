@@ -65,7 +65,7 @@
             newitem.snippet = playlist.snippet;
 
             playlistResource.save(newitem, function(data) {
-                loadPlaylists();
+                setTimeout(loadPlaylists, 500);
             },function(data){
                 // oops!
             });
@@ -76,23 +76,23 @@
             if(!confirm('Are you sure you want to remove playlist?'))
                 return;
 
-            var newitem = new playlistResource();
-            newitem.id = playlist.id;
+            var deletingItem = new playlistResource();
+            deletingItem.id = playlist.id;
 
-            playlistResource.delete(newitem, function(data) {
-                loadPlaylists();
+            playlistResource.delete(deletingItem, function(data) {
+                setTimeout(loadPlaylists, 500);
             },function(data){
                 // oops!
             });
         };
 
         var updatePlaylist = function(playlist){
-            var newitem = new playlistResource();
-            newitem.id = playlist.id;
-            newitem.snippet = playlist.snippet;
+            var updatingItem = new playlistResource();
+            updatingItem.id = playlist.id;
+            updatingItem.snippet = playlist.snippet;
 
-            playlistResource.update(newitem, function(data) {
-                loadPlaylists();
+            playlistResource.update(updatingItem, function(data) {
+                setTimeout(loadPlaylists, 500);
             },function(data){
                 // oops!
             });
