@@ -15,7 +15,7 @@
             {
                 'get':    {method:'GET',params:{id:'@id'}},
                 'save':   {method:'POST'},
-                'query':  {method:'GET', params:{part: 'snippet', playlistId: '@playlistId', mine: 'true', maxResults : 50}, withCredentials:true},
+                'query':  {method:'GET', params:{part: 'snippet', playlistId: '@playlistId', mine: 'true', maxResults : 50}},
                 'remove': {method:'DELETE'},
                 'delete': {method:'DELETE'}
             }

@@ -61,16 +61,41 @@
         };
 
         var addNewPlaylist = function(playlist){
+            var newitem = new playlistResource();
+            newitem.snippet = playlist.snippet;
 
+            playlistResource.save(newitem, function(data) {
+                loadPlaylists();
+            },function(data){
+                // oops!
+            });
         };
 
         var removePlaylist = function(playlist)
         {
+            if(!confirm('Are you sure you want to remove playlist?'))
+                return;
 
+            var newitem = new playlistResource();
+            newitem.id = playlist.id;
+
+            playlistResource.delete(newitem, function(data) {
+                loadPlaylists();
+            },function(data){
+                // oops!
+            });
         };
 
-        var updatePlaylist = function(){
+        var updatePlaylist = function(playlist){
+            var newitem = new playlistResource();
+            newitem.id = playlist.id;
+            newitem.snippet = playlist.snippet;
 
+            playlistResource.update(newitem, function(data) {
+                loadPlaylists();
+            },function(data){
+                // oops!
+            });
         };
 
         loadPlaylists();

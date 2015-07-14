@@ -60,8 +60,8 @@
                 if(!playlist.items.length){
                     fillPlaylistWithVideos(playlist)
                         .then(function () {
-                            //add check if no videos in playlist
-                            vm.setCurrentPlaylistItem(playlist.items[0]);
+                            if(playlist.items.length)
+                                vm.setCurrentPlaylistItem(playlist.items[0]);
                         }
                     );
                 } else {
