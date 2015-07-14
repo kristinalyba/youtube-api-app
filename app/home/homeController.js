@@ -69,9 +69,9 @@
             );
         };
 
-        vm.removeFromPlaylist = function () {
+        vm.removeFromPlaylist = function (item) {
             var deleteItem = new playlistitemsResource();
-            deleteItem.id = vm.selectedPlaylistItem.id;
+            deleteItem.id = item? item.id : vm.selectedPlaylistItem.id;
             playlistitemsResource.delete(deleteItem, function() {
                     reloadPlayListItem();
                 },function()
