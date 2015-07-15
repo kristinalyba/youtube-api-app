@@ -14,14 +14,17 @@
             <div class="row">
                 <div class="col-md-9">
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle playlist-dropdown" type="button"
+                        <button class="btn btn-default dropdown-toggle playlist-dropdown"
+                                type="button"
                                 id="playlistDropdown"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="true">
                             {{vm.getSpecificPlaylist(vm.selectedPlaylistId).snippet.title}}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu playlist-dropdown" aria-labelledby="playlistDropdown">
-                            <li ng-repeat="playlist in vm.playlists">
+                            <li ng-repeat="playlist in vm.playlistService.playlists">
                                 <a ng-click="vm.setCurrentPlaylist(playlist)">
                                     {{playlist.snippet.title}}
                                 </a>

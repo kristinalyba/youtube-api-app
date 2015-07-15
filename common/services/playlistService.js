@@ -5,11 +5,15 @@
         var svc = this;
 
         svc.playlists = [];
+        svc.playlistsPromise;
 
         function loadPlaylists(){
-            playlistResource.query(function playlistsLoadedCallback(data){
-                svc.playlists = data;
-            });
+            svc.playlistsPromise = playlistResource.query(function playlistsLoadedCallback(data){
+                svc.playlists = data.items;
+                for (var i = 0; i < svc.playlists.length; i++) {
+                    svc.playlists[i].items = [];
+                }
+            }).$promise;
         }
         loadPlaylists();
 
@@ -20,7 +24,7 @@
             return playlistResource.save(newitem).$promise
                 .then(function playlistAdded(data){
                 var newPlaylist = data;
-                svc.playlists.items.splice(0,0,newPlaylist);
+                svc.playlists.splice(0,0,newPlaylist);
             }, function playlistNotAdded(data){
 
             });
@@ -35,8 +39,8 @@
 
             return playlistResource.delete(deletingItem).$promise
                 .then(function playlistRemoved(data){
-                var indx = _.indexOf(svc.playlists.items, playlist);
-                if(indx!== -1) svc.playlists.items.splice(indx,1)
+                var indx = _.indexOf(svc.playlists, playlist);
+                if(indx!== -1) svc.playlists.splice(indx,1)
             }, function playlistNotRemoved(data){
 
             });

@@ -1,27 +1,20 @@
-/**
- * Created by k.lyba on 09.07.2015.
- */
 (function () {
     "use strict";
 
     angular
         .module("ytApp")
-        .controller("HomeController", ["playlistResource", "playlistitemsResource", "$state", HomeController]);
+        .controller("HomeController", ["playlistService", "playlistitemsResource", "$state", HomeController]);
 
-    function HomeController(playlistResource,playlistitemsResource, $state) {
+    function HomeController(playlistService, playlistitemsResource, $state) {
         var vm = this;
-        vm.playlists = [];
+        vm.playlistService = playlistService;
         vm.selectedPlaylistId = '';
         vm.selectedPlaylistItem = {};
         vm.IsVideoInCurrentPlaylist = true;
 
-        playlistResource.query(function (data) {
-            for (var i = 0; i < data.items.length; i++) {
-                vm.playlists.push(data.items[i]);
-                vm.playlists[i].items = [];
-            }
-            if (vm.playlists.length) {
-                vm.setCurrentPlaylist(vm.playlists[0]);
+        playlistService.playlistsPromise.then(function(){
+            if (vm.playlistService.playlists.length) {
+                vm.setCurrentPlaylist(vm.playlistService.playlists[0]);
             }
         });
 
@@ -35,7 +28,7 @@
         }
 
         vm.getSpecificPlaylist = function (playlistId) {
-            return _.find(vm.playlists, function (playlist) {
+            return _.find(vm.playlistService.playlists, function (playlist) {
                     return playlist.id === playlistId;
                 }
             );
