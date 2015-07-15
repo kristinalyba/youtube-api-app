@@ -83,7 +83,7 @@
             if(playlistItem)
             {
                 vm.selectedPlaylistItem.title = playlistItem.snippet.title;
-                vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;// + '&autoplay=true';
+                vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;
                 vm.selectedPlaylistItem.videoId = playlistItem.snippet.resourceId.videoId;
                 vm.selectedPlaylistItem.id = playlistItem.id;
             }

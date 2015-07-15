@@ -5,8 +5,8 @@
             "ui.router"
         ]);
 
-    app.config(["$stateProvider", "$urlRouterProvider","$sceDelegateProvider",
-        function ($stateProvider, $urlRouterProvider,$sceDelegateProvider) {
+    app.config(["$stateProvider", "$urlRouterProvider", "$sceDelegateProvider",
+        function ($stateProvider, $urlRouterProvider, $sceDelegateProvider) {
 
             $sceDelegateProvider.resourceUrlWhitelist([
                 'self',
@@ -18,11 +18,9 @@
             $urlRouterProvider.otherwise("/home/player");
 
             $stateProvider
-                .state("login", {
-                    url: "/login",
-                    templateUrl: "app/login/loginView.html",
-                    controller: "LoginController",
-                    controllerAs: "vm"
+                .state("welcome", {
+                    url: "/",
+                    templateUrl: "app/main/welcome.html"
                 })
                 .state("home", {
                     abstract: true,
@@ -31,17 +29,17 @@
                     controller: "HomeController",
                     controllerAs: "vm",
                     resolve: {
-                            authCheck: function(authorizationService, $state){
-                                return authorizationService
-                                    .checkAuth()
-                                .then(function(){
+                        authCheck: function (authorizationService, $state) {
+                            return authorizationService
+                                .checkAuth()
+                                .then(function () {
                                     authorizationService
                                         .setAuthToken();
                                 },
-                                      function(){
-                                    $state.go('login');
+                                function () {
+                                    $state.go('welcome');
                                 });
-                            }
+                        }
                     }
                 })
                 .state("home.player", {

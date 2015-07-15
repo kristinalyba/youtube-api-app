@@ -14,7 +14,8 @@
 <body ng-app="ytApp" ng-controller="MainController as vm">
 <nav class="navbar navbar-inverse">
     <div class="container">
-        <a class="navbar-brand">YouTube API App</a>
+        <a ui-sref="welcome" class="navbar-brand">YouTube API App</a>
+
         <div class="navbar-header">
             <button type="button"
                     class="navbar-toggle"
@@ -26,15 +27,26 @@
                 <span class="icon-bar"></span>
             </button>
         </div>
-        <div class="navbar-collapse collapse" ng-if="isLoggedIn">
+        <div class="navbar-collapse collapse" ng-if="vm.isLoggedIn">
             <ul class="nav navbar-nav">
                 <li><a ui-sref="home.player">Player</a></li>
                 <li><a ui-sref="home.search">Search</a></li>
                 <li><a ui-sref="home.edit">Playlists</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a>User name<i class="glyphicon glyphicon-user"></i></a></li>
+                <li>
+                    <a href="#">{{vm.userInfo.fullName}} <img class="user-minipic"
+                                                                               ng-if="vm.userInfo.picture"
+                                                                               ng-src="{{vm.userInfo.picture}}">
+                        <i class="glyphicon glyphicon-user" ng-if="!vm.userInfo.picture"></i>
+                    </a>
+                </li>
                 <li><a ng-click="vm.logOut()"><i class="glyphicon glyphicon-off"></i></a></li>
+            </ul>
+        </div>
+        <div class="navbar-collapse collapse" ng-if="!vm.isLoggedIn">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a ng-click="vm.logIn()">Log In</a></li>
             </ul>
         </div>
     </div>
@@ -63,11 +75,10 @@
 <script src="common/services/playlistService.js"></script>
 
 <!-- Controllers -->
-<script src="app/login/loginController.js"></script>
 <script src="app/home/homeController.js"></script>
 <script src="app/search/searchController.js"></script>
 <script src="app/edit/editController.js"></script>
-<script src="app/mainController.js"></script>
+<script src="app/main/mainController.js"></script>
 
 </body>
 </html>

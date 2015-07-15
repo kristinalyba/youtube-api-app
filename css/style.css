@@ -69,6 +69,16 @@
     right: 0;
 }
 
+.welcome-text{
+    font-size: 32px;
+}
+
+.user-minipic {
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+}
+
 .video-item{
     cursor: pointer;
 }
