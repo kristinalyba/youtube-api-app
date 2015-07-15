@@ -49,7 +49,7 @@
                     templateUrl: "app/player/playerView.html"
                 })
                 .state("home.search", {
-                    url: "/search",
+                    url: "/search/:selectedPlaylistId/:searchtext",
                     templateUrl: "app/search/searchView.html",
                     controller: "SearchController",
                     controllerAs: "vm"

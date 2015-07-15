@@ -1,1 +1,37 @@
-<div>search view</div>
+<div class="">
+    <table class="table table-hover table-responsive">
+        <tbody>
+        <tr ng-repeat="searchItem in vm.searchResult">
+            <td class="horizontal-center">
+                <img ng-src="{{searchItem.snippet.thumbnails['default'].url}}">
+            </td>
+            <td>
+                <div class="">
+                    <label>Title: </label>
+                    <span>
+                        {{searchItem.snippet.title}}
+                    </span>
+                </div>
+                <div class="">
+                    <label>Description: </label>
+                    <span>
+                        {{searchItem.snippet.description || 'none'}}
+                    </span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <button class="btn btn-success pull-right" ng-disabled="searchItem.isExisted" ng-click="vm.addToPlayList(searchItem)">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </div>
+                <div>
+                    <button class="btn btn-error pull-right" ng-disabled="!searchItem.isExisted" ng-click="vm.removeFromPlayList(searchItem)">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

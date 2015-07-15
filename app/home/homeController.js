@@ -10,7 +10,17 @@
         vm.playlistService = playlistService;
         vm.selectedPlaylistId = '';
         vm.selectedPlaylistItem = {};
-        vm.IsVideoInCurrentPlaylist = true;
+        vm.isVideoInCurrentPlaylist = true;
+        vm.searchtext='';
+
+        vm.getSearchResult = function()
+        {
+            if(vm.searchtext !== '')
+            {
+                $state.go('home.search',{selectedPlaylistId: vm.selectedPlaylistId, searchtext: vm.searchtext});
+            }
+
+        };
 
         playlistService.playlistsPromise.then(function(){
             if (vm.playlistService.playlists.length) {
@@ -49,7 +59,7 @@
                     return item.id === vm.selectedPlaylistItem.id;
                 }) >= 0 ;
             }
-            vm.IsVideoInCurrentPlaylist = result;
+            vm.isVideoInCurrentPlaylist = result;
         };
 
         vm.setCurrentPlaylist = function (playlist) {
