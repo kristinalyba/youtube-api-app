@@ -72,3 +72,8 @@
 .video-item{
     cursor: pointer;
 }
+
+.yt-thumbnail{
+    max-height: 90px;
+    max-width: 120px;
+}

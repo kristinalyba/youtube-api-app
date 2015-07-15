@@ -3,21 +3,21 @@
 
     angular
         .module("ytApp")
-        .controller("HomeController", ["playlistService", "playlistitemsResource", "$state", HomeController]);
+        .controller("HomeController", ["$scope", "playlistService", "$state", HomeController]);
 
-    function HomeController(playlistService, playlistitemsResource, $state) {
+    function HomeController($scope, playlistService, $state) {
         var vm = this;
         vm.playlistService = playlistService;
-        vm.selectedPlaylistId = '';
+        vm.selectedPlaylist = {};
         vm.selectedPlaylistItem = {};
         vm.isVideoInCurrentPlaylist = true;
-        vm.searchtext='';
+        vm.searchText='';
 
         vm.getSearchResult = function()
         {
-            if(vm.searchtext !== '')
+            if(vm.searchText !== '')
             {
-                $state.go('home.search',{selectedPlaylistId: vm.selectedPlaylistId, searchtext: vm.searchtext});
+                $state.go('home.search', {selectedPlaylistId: vm.selectedPlaylist.id, searchText: vm.searchText});
             }
 
         };
@@ -37,21 +37,21 @@
 
         vm.addToPlaylist = function () {
             var newItem = {id: vm.selectedPlaylistItem.videoId};
-            var playList = vm.getSpecificPlaylist(vm.selectedPlaylistId);
+            var playList = vm.selectedPlaylist;
 
             playlistService.addItemToPlaylist(playList, newItem);
         };
 
         vm.removeFromPlaylist = function (item) {
             var itemToDelete = {id: item? item.id : vm.selectedPlaylistItem.id};
-            var playList = vm.getSpecificPlaylist(vm.selectedPlaylistId);
+            var playList = vm.selectedPlaylist;
 
             playlistService.removeItemFromPlaylist(playList, item);
         };
 
         var checkIsVideoInCurrentPlaylist = function () {
             var result = true;
-            var currentPlayListItem = vm.getSpecificPlaylist(vm.selectedPlaylistId);
+            var currentPlayListItem = vm.selectedPlaylist;
             if(currentPlayListItem)
             {
 
@@ -63,8 +63,9 @@
         };
 
         vm.setCurrentPlaylist = function (playlist) {
-            if (!vm.selectedPlaylistId || vm.selectedPlaylistId !== playlist.id) {
-                vm.selectedPlaylistId = playlist.id;
+            if (!vm.selectedPlaylist || vm.selectedPlaylist.id !== playlist.id) {
+                $scope.selectedPlaylist = playlist;
+                vm.selectedPlaylist = playlist;
                 if(!playlist.items.length){
                     playlistService.fillPlaylistItems(playlist)
                         .then(function () {
@@ -103,7 +104,7 @@
         var prevView;
 
         vm.toggleEdit = function(){
-            if(isEditMode()){
+            if(vm.isEditMode()){
                 $state.go(!prevView || prevView == 'home.edit' ? 'home.player' : prevView);
             }
             else{
@@ -112,7 +113,7 @@
             }
         };
 
-        var isEditMode = function(){
+        vm.isEditMode = function(){
             return vm.currentView() == 'home.edit';
         };
     }

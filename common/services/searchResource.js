@@ -1,6 +1,3 @@
-/**
- * Created by a.ovsiannikov on 7/10/2015.
- */
 (function(){
     "use strict";
 
@@ -13,11 +10,8 @@
             "https://www.googleapis.com/youtube/v3/search",null
             ,
             {
-                'query':  {method:'GET', params:{part: 'snippet', mine: 'true', maxResults : 50, q: '@q'}}
+                'query':  {method:'GET', params:{part: 'snippet', maxResults : 50, q: '@q'}}
             }
         );
     }
 }());
-
-
-

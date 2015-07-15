@@ -57,7 +57,7 @@
             var newitem = new playlistitemsResource();
             newitem.snippet = {
                 playlistId : playlist.id,
-                resourceId : { kind: "youtube#video", videoId: item.id}
+                resourceId : { kind: "youtube#video", videoId: item.id.videoId}
             };
 
             return playlistitemsResource.save(newitem, function itemAddedToPlaylist(data) {
@@ -78,7 +78,7 @@
                     var itemIndx = _.indexOf(svc.playlists[playlistIndx].items, item);
                     if(itemIndx !== -1) svc.playlists[playlistIndx].items.splice(itemIndx, 1);
                 }
-            },function itemNotRemovedFromPlaylist(){
+            },function itemNotRemovedFromPlaylist(data){
 
             }).$promise;
         };
