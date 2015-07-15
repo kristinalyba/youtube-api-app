@@ -38,9 +38,6 @@
 
         vm.logIn = function () {
             authorizationService.login()
-                .then(function () {
-                    return authorizationService.checkAuth();
-                })
                 .then(loadUserInfo)
                 .then(redirectUser);
         };
