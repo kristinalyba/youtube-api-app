@@ -18,15 +18,6 @@
             }
         });
 
-        function fillPlaylistWithVideos(playlist) {
-            return playlistitemsResource.query({playlistId: playlist.id}, function (data) {
-                for (var i = 0; i < data.items.length; i++) {
-                    playlist.items.push(data.items[i]);
-                }
-            }).$promise;
-
-        }
-
         vm.getSpecificPlaylist = function (playlistId) {
             return _.find(vm.playlistService.playlists, function (playlist) {
                     return playlist.id === playlistId;
@@ -34,44 +25,18 @@
             );
         };
 
-        var reloadPlayListItem = function()
-        {
-            if(vm.selectedPlaylistId !== '')
-            {
-                var currentPlayListItem = vm.getSpecificPlaylist(vm.selectedPlaylistId);
-                if(currentPlayListItem)
-                {
-                    vm.selectedPlaylistId='';
-                    currentPlayListItem.items=[];
-                    vm.setCurrentPlaylist(currentPlayListItem);
-                }
-            }
-        };
-
         vm.addToPlaylist = function () {
-            var newitem = new playlistitemsResource();
-            newitem.snippet = {};
-            newitem.snippet.playlistId = vm.selectedPlaylistId;
-            newitem.snippet.resourceId = { kind: "youtube#video" ,videoId: vm.selectedPlaylistItem.videoId};
+            var newItem = {id: vm.selectedPlaylistItem.videoId};
+            var playList = vm.getSpecificPlaylist(vm.selectedPlaylistId);
 
-            playlistitemsResource.save(newitem, function() {
-                    reloadPlayListItem();
-                },function()
-                {
-                }
-            );
+            playlistService.addItemToPlaylist(playList, newItem);
         };
 
         vm.removeFromPlaylist = function (item) {
-            var deleteItem = new playlistitemsResource();
-            deleteItem.id = item? item.id : vm.selectedPlaylistItem.id;
-            playlistitemsResource.delete(deleteItem, function() {
-                    reloadPlayListItem();
-                },function()
-                {
-                }
-            );
+            var itemToDelete = {id: item? item.id : vm.selectedPlaylistItem.id};
+            var playList = vm.getSpecificPlaylist(vm.selectedPlaylistId);
 
+            playlistService.removeItemFromPlaylist(playList, item);
         };
 
         var checkIsVideoInCurrentPlaylist = function () {
@@ -91,7 +56,7 @@
             if (!vm.selectedPlaylistId || vm.selectedPlaylistId !== playlist.id) {
                 vm.selectedPlaylistId = playlist.id;
                 if(!playlist.items.length){
-                    fillPlaylistWithVideos(playlist)
+                    playlistService.fillPlaylistItems(playlist)
                         .then(function () {
                             if(playlist.items.length)
                                 vm.setCurrentPlaylistItem(playlist.items[0]);

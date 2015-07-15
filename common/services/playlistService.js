@@ -23,8 +23,7 @@
 
             return playlistResource.save(newitem).$promise
                 .then(function playlistAdded(data){
-                var newPlaylist = data;
-                svc.playlists.splice(0,0,newPlaylist);
+                svc.playlists.splice(0, 0, data);
             }, function playlistNotAdded(data){
 
             });
@@ -40,7 +39,7 @@
             return playlistResource.delete(deletingItem).$promise
                 .then(function playlistRemoved(data){
                 var indx = _.indexOf(svc.playlists, playlist);
-                if(indx!== -1) svc.playlists.splice(indx,1)
+                if(indx!== -1) svc.playlists.splice(indx, 1)
             }, function playlistNotRemoved(data){
 
             });
@@ -53,5 +52,41 @@
 
             return playlistResource.update(updatingItem).$promise;
         };
+
+        svc.addItemToPlaylist = function (playlist, item) {
+            var newitem = new playlistitemsResource();
+            newitem.snippet = {
+                playlistId : playlist.id,
+                resourceId : { kind: "youtube#video", videoId: item.id}
+            };
+
+            return playlistitemsResource.save(newitem, function itemAddedToPlaylist(data) {
+                var indx = _.indexOf(svc.playlists, playlist);
+                if(indx !== -1) svc.playlists[indx].items.splice(0, 0, data);
+            },function itemNotAddedToPlaylist(data){
+
+            }).$promise;
+        };
+
+        svc.removeItemFromPlaylist = function (playlist, item) {
+            var deleteItem = new playlistitemsResource();
+            deleteItem.id = item.id;
+
+            return playlistitemsResource.delete(deleteItem, function itemRemovedFromPlaylist() {
+                var playlistIndx = _.indexOf(svc.playlists, playlist);
+                if(playlistIndx!== -1){
+                    var itemIndx = _.indexOf(svc.playlists[playlistIndx].items, item);
+                    if(itemIndx !== -1) svc.playlists[playlistIndx].items.splice(itemIndx, 1);
+                }
+            },function itemNotRemovedFromPlaylist(){
+
+            }).$promise;
+        };
+
+        svc.fillPlaylistItems = function (playlist) {
+            return playlistitemsResource.query({playlistId: playlist.id}, function (data) {
+                playlist.items = data.items;
+            }).$promise;
+        }
     };
 }());

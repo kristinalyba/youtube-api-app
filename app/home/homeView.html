@@ -47,16 +47,14 @@
         <div class="col-md-3">
             <div class="list-group playlist-control">
                 <div ng-repeat="item in vm.getSpecificPlaylist(vm.selectedPlaylistId).items">
-                    <div type="button"
-                            class="list-group-item playlist-item"
-                            ng-click="vm.setCurrentPlaylistItem(item)">
-                        <span class="">{{item.snippet.title}}</span>
+                    <div class="list-group-item playlist-item">
+                        <span ng-click="vm.setCurrentPlaylistItem(item)" class="video-item">{{item.snippet.title}}</span>
                         <button type="button"
-                            class="close-button pull-right top-right-corner"
-                            title="Remove playlist"
-                            ng-click="vm.removeFromPlaylist(item)">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </button>
+                                class="close-button pull-right top-right-corner"
+                                title="Remove playlist"
+                                ng-click="vm.removeFromPlaylist(item)">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
                     </div>
                 </div>
             </div>
