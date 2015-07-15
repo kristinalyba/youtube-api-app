@@ -17,7 +17,7 @@
         {
             if(vm.searchText !== '')
             {
-                $state.go('home.search', {selectedPlaylistId: vm.selectedPlaylist.id, searchText: vm.searchText});
+                $state.go('home.search', {searchText: vm.searchText});
             }
 
         };
