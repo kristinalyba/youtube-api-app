@@ -28,13 +28,6 @@
             }
         });
 
-        vm.getSpecificPlaylist = function (playlistId) {
-            return _.find(vm.playlistService.playlists, function (playlist) {
-                    return playlist.id === playlistId;
-                }
-            );
-        };
-
         vm.addToPlaylist = function () {
             var newItem = {id: vm.selectedPlaylistItem.videoId};
             var playList = vm.selectedPlaylist;
