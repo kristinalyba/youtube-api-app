@@ -21,12 +21,18 @@
             </td>
             <td>
                 <div>
-                    <button class="btn btn-success pull-right" ng-disabled="searchItem.alreadyInList" ng-click="vm.addToPlayList(searchItem)">
+                    <button class="btn btn-success"
+                            ng-disabled="searchItem.alreadyInList"
+                            title="Add to current playlist"
+                            ng-click="vm.addToPlayList(searchItem)">
                         <i class="glyphicon glyphicon-plus"></i>
                     </button>
                 </div>
                 <div>
-                    <button class="btn btn-error pull-right" ng-disabled="!searchItem.alreadyInList" ng-click="vm.removeFromPlayList(searchItem)">
+                    <button class="btn btn-error"
+                            ng-disabled="!searchItem.alreadyInList"
+                            title="Remove from current playlist"
+                            ng-click="vm.removeFromPlayList(searchItem)">
                         <i class="glyphicon glyphicon-remove"></i>
                     </button>
                 </div>
