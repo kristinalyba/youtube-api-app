@@ -88,8 +88,15 @@
 
         svc.fillPlaylistItems = function (playlist) {
             return playlistitemsResource.query({playlistId: playlist.id}, function (data) {
-                playlist.items = data.items;
+                var indx = getPlaylistIndex(playlist);
+                svc.playlists[indx].items = data.items;
             }).$promise;
         }
+
+        var getPlaylistIndex = function(searchItem){
+            return _.findIndex(svc.playlists, function (playlist) {
+                return playlist.id === searchItem.id;
+            });
+        };
     };
 }());
