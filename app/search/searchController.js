@@ -15,21 +15,19 @@
         var performSearch = function(){
             searchResource.query({q: vm.searchText}, function (data) {
                 vm.searchResult = data.items;
-                var prms = playlist.items.length ? $q.when([]) : playlistService.fillPlaylistItems(playlist);
-                prms.then(function(playlistWithItems){
+                var promise = playlist.items.length ? $q.when([]) : playlistService.fillPlaylistItems(playlist);
+                promise.then(function(playlistWithItems){
                     if(!playlist.items.length)
                         playlist = playlistWithItems;
                     for (var i = 0; i < vm.searchResult.length; i++) {
                         vm.searchResult[i].alreadyInList = isVideoInList(vm.searchResult[i]);
                     }
                 });
-            }
-        )};
+            });
+        };
 
         function isVideoInList(searchItem){
-            return $.map(playlist.items, function(item){
-                return item.snippet.resourceId.videoId === searchItem.id.videoId ? 1 : null;
-            }).length > 0;
+            return itemIndexInPlaylist(searchItem) !== -1;
         }
 
         vm.addToPlayList = function(searchItem){

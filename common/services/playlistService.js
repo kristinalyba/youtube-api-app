@@ -75,7 +75,10 @@
             return playlistitemsResource.delete(deleteItem, function itemRemovedFromPlaylist() {
                 var playlistIndx = _.indexOf(svc.playlists, playlist);
                 if(playlistIndx!== -1){
-                    var itemIndx = _.indexOf(svc.playlists[playlistIndx].items, item);
+                    var itemIndx = _.findIndex(svc.playlists[playlistIndx].items,
+                                               function (playlistItem) {
+                        return playlistItem.id === deleteItem.id;
+                    });
                     if(itemIndx !== -1) svc.playlists[playlistIndx].items.splice(itemIndx, 1);
                 }
             },function itemNotRemovedFromPlaylist(data){

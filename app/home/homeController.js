@@ -13,13 +13,10 @@
         vm.isVideoInCurrentPlaylist = true;
         vm.searchText='';
 
-        vm.getSearchResult = function()
-        {
-            if(vm.searchText !== '')
-            {
+        vm.getSearchResult = function(){
+            if(vm.searchText !== ''){
                 $state.go('home.search', {searchText: vm.searchText});
             }
-
         };
 
         playlistService.playlistsPromise.then(function(){
@@ -39,15 +36,13 @@
             var itemToDelete = {id: item? item.id : vm.selectedPlaylistItem.id};
             var playList = vm.selectedPlaylist;
 
-            playlistService.removeItemFromPlaylist(playList, item);
+            playlistService.removeItemFromPlaylist(playList, itemToDelete);
         };
 
         var checkIsVideoInCurrentPlaylist = function () {
             var result = true;
             var currentPlayListItem = vm.selectedPlaylist;
-            if(currentPlayListItem)
-            {
-
+            if(currentPlayListItem){
                 result = _.findIndex(currentPlayListItem.items, function (item) {
                     return item.id === vm.selectedPlaylistItem.id;
                 }) >= 0 ;
@@ -73,15 +68,12 @@
         };
 
         vm.setCurrentPlaylistItem = function(playlistItem){
-            if(playlistItem)
-            {
+            if(playlistItem){
                 vm.selectedPlaylistItem.title = playlistItem.snippet.title;
                 vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;
                 vm.selectedPlaylistItem.videoId = playlistItem.snippet.resourceId.videoId;
                 vm.selectedPlaylistItem.id = playlistItem.id;
-            }
-            else
-            {
+            } else {
                 vm.selectedPlaylistItem.title = 'video not found';
                 vm.selectedPlaylistItem.src = '';
                 vm.selectedPlaylistItem.videoId = '';
