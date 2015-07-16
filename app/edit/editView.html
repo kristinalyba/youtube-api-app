@@ -40,7 +40,7 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-repeat="playlist in vm.playlists.items">
+            <tr ng-repeat="playlist in vm.playlistService.playlists">
                 <td class="horizontal-center">
                     <img ng-src="{{playlist.snippet.thumbnails['default'].url}}">
                 </td>
@@ -48,7 +48,7 @@
                     <div class="">
                         <label>Title: </label>
                         <div ng-if="playlist.editMode">
-                            <input type="text" class="full-width" ng-minlength="1" ng-model="playlist.snippet.tempTitle"/>
+                            <input type="text" class="full-width" ng-minlength="1" ng-model="playlist.snippet.title"/>
                         </div>
                         <span ng-if="!playlist.editMode">
                             {{playlist.snippet.title}}
@@ -57,7 +57,7 @@
                     <div class="">
                         <label>Description: </label>
                         <div ng-if="playlist.editMode">
-                            <input type="text" class="full-width" ng-model="playlist.snippet.tempDescription"/>
+                            <input type="text" class="full-width" ng-model="playlist.snippet.description"/>
                         </div>
                         <span ng-if="!playlist.editMode">
                             {{playlist.snippet.description || 'none'}}

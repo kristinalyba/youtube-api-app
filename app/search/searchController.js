@@ -1,85 +1,64 @@
-/**
- * Created by k.lyba on 09.07.2015.
- */
 (function(){
     "use strict";
 
     angular
         .module("ytApp")
-        .controller("SearchController", ["searchResource","playlistitemsResource","$stateParams",SearchController]);
+        .controller("SearchController", ["$q", "playlistService", "$scope", "searchResource", "$stateParams", SearchController]);
 
-    function SearchController(searchResource,playlistitemsResource,$stateParams){
+    function SearchController($q, playlistService, $scope, searchResource, $stateParams){
         var vm = this;
-        vm.playlist =[];
+        vm.playlistService = playlistService;
         vm.searchResult =[];
-        vm.searchtext = $stateParams.searchtext;
-        vm.playlistId = $stateParams.selectedPlaylistId;
+        vm.searchText = $stateParams.searchText;
 
-        var searching = function(){
-            searchResource.query({d: vm.searchtext}, function (data) {
-                    for (var i = 0; i < data.items.length; i++) {
-                        vm.searchResult.push(data.items[i]);
-                        var searchItem = vm.searchResult[i];
-                        searchItem.isExisted = _.find(vm.playlist, function (item) {
-                            return item.snippet.resourceId.videoId === searchItem.id.videoId;
-                        });
+        var performSearch = function(){
+            searchResource.query({q: vm.searchText}, function (data) {
+                vm.searchResult = data.items;
+                var promise = $scope.selectedPlaylist.items.length ? $q.when([]) : playlistService.fillPlaylistItems($scope.selectedPlaylist);
+                promise.then(function(playlistWithItems){
+                    if(!$scope.selectedPlaylist.items.length)
+                        $scope.selectedPlaylist.items = playlistWithItems.items;
+                    for (var i = 0; i < vm.searchResult.length; i++) {
+                        vm.searchResult[i].alreadyInList = isVideoInList(vm.searchResult[i]);
                     }
-                }
-            )};
-
-        vm.addToPlayList = function(searchItem)
-        {
-            var index = vm.getIndex(searchItem);
-
-            if(index >= 0)
-            {
-                var newitem = new playlistitemsResource();
-                newitem.snippet = {};
-                newitem.snippet.playlistId = vm.playlistId;
-                newitem.snippet.resourceId = { kind: "youtube#video" ,videoId: searchItem.id.videoId};
-
-                playlistitemsResource.save(newitem, function() {
-                        vm.searchResult[index].isExisted = true;
-                    },function()
-                    {
-                    }
-                );
-            }
-        };
-
-        vm.getIndex = function(searchItem)
-        {
-            return _.findIndex(vm.searchResult, function (item) {
-                return item.id === searchItem.id;
+                });
             });
         };
 
-        vm.removeFromPlayList = function(searchItem)
-        {
-            var index = vm.getIndex(searchItem);
+        function isVideoInList(searchItem){
+            return itemIndexInPlaylist(searchItem) !== -1;
+        }
 
-            if(index >= 0 && searchItem.isExisted)
-            {
-                var deleteItem = new playlistitemsResource();
-                deleteItem.id = searchItem.isExisted.id;
-                playlistitemsResource.delete(deleteItem, function() {
-                        vm.searchResult[index].isExisted = false;
-                    },function()
-                    {
-                    }
-                );
+        vm.addToPlayList = function(searchItem){
+            var index = itemIndexInPlaylist(searchItem);
+
+            if(index === -1){
+                playlistService.addItemToPlaylist($scope.selectedPlaylist, searchItem)
+                    .then(function(){
+                    searchItem.alreadyInList = isVideoInList(searchItem);
+                });
             }
         };
 
-        var loadPlaylistItem = function(){
-            playlistitemsResource.query({playlistId: vm.playlistId}, function (data) {
-                for (var i = 0; i < data.items.length; i++) {
-                    vm.playlist.push(data.items[i]);
-                }
-                searching();
-            })
+        var itemIndexInPlaylist = function(searchItem){
+            return _.findIndex($scope.selectedPlaylist.items, function (item) {
+                return item.snippet.resourceId.videoId === searchItem.id.videoId;
+            });
         };
 
-        loadPlaylistItem();
+        vm.removeFromPlayList = function(searchItem){
+            var index = itemIndexInPlaylist(searchItem);
+
+            if(index !== -1 && searchItem.alreadyInList){
+                playlistService.removeItemFromPlaylist($scope.selectedPlaylist, $scope.selectedPlaylist.items[index])
+                    .then(function videoRemovedFromPlaylist(data){
+                    searchItem.alreadyInList = isVideoInList(searchItem);
+                });
+            }
+        };
+
+        playlistService.playlistsPromise.then(function(){
+            performSearch();
+        });
     }
 }());

@@ -1,102 +1,48 @@
-/**
- * Created by k.lyba on 09.07.2015.
- */
 (function () {
     "use strict";
 
     angular
         .module("ytApp")
-        .controller("HomeController", ["playlistResource", "playlistitemsResource", "$state", HomeController]);
+        .controller("HomeController", ["$scope", "playlistService", "$state", HomeController]);
 
-    function HomeController(playlistResource,playlistitemsResource, $state) {
+    function HomeController($scope, playlistService, $state) {
         var vm = this;
-        vm.playlists = [];
-        vm.selectedPlaylistId = '';
+        vm.playlistService = playlistService;
+        vm.selectedPlaylist = {};
         vm.selectedPlaylistItem = {};
         vm.isVideoInCurrentPlaylist = true;
-        vm.searchtext='';
+        vm.searchText='';
 
-        vm.getSearchResult = function()
-        {
-            if(vm.searchtext !== '')
-            {
-                $state.go('home.search',{selectedPlaylistId: vm.selectedPlaylistId, searchtext: vm.searchtext});
+        vm.getSearchResult = function(){
+            if(vm.searchText !== ''){
+                $state.go('home.search', {searchText: vm.searchText});
             }
-
         };
 
-        playlistResource.query(function (data) {
-            for (var i = 0; i < data.items.length; i++) {
-                vm.playlists.push(data.items[i]);
-                vm.playlists[i].items = [];
-            }
-            if (vm.playlists.length) {
-                vm.setCurrentPlaylist(vm.playlists[0]);
+        playlistService.playlistsPromise.then(function(){
+            if (vm.playlistService.playlists.length) {
+                vm.setCurrentPlaylist(vm.playlistService.playlists[0]);
             }
         });
 
-        function fillPlaylistWithVideos(playlist) {
-            return playlistitemsResource.query({playlistId: playlist.id}, function (data) {
-                for (var i = 0; i < data.items.length; i++) {
-                    playlist.items.push(data.items[i]);
-                }
-            }).$promise;
-
-        }
-
-        vm.getSpecificPlaylist = function (playlistId) {
-            return _.find(vm.playlists, function (playlist) {
-                    return playlist.id === playlistId;
-                }
-            );
-        };
-
-        var reloadPlayListItem = function()
-        {
-            if(vm.selectedPlaylistId !== '')
-            {
-                var currentPlayListItem = vm.getSpecificPlaylist(vm.selectedPlaylistId);
-                if(currentPlayListItem)
-                {
-                    vm.selectedPlaylistId='';
-                    currentPlayListItem.items=[];
-                    vm.setCurrentPlaylist(currentPlayListItem);
-                }
-            }
-        };
-
         vm.addToPlaylist = function () {
-            var newitem = new playlistitemsResource();
-            newitem.snippet = {};
-            newitem.snippet.playlistId = vm.selectedPlaylistId;
-            newitem.snippet.resourceId = { kind: "youtube#video" ,videoId: vm.selectedPlaylistItem.videoId};
+            var newItem = {id: vm.selectedPlaylistItem.videoId};
+            var playList = vm.selectedPlaylist;
 
-            playlistitemsResource.save(newitem, function() {
-                    reloadPlayListItem();
-                },function()
-                {
-                }
-            );
+            playlistService.addItemToPlaylist(playList, newItem);
         };
 
         vm.removeFromPlaylist = function (item) {
-            var deleteItem = new playlistitemsResource();
-            deleteItem.id = item? item.id : vm.selectedPlaylistItem.id;
-            playlistitemsResource.delete(deleteItem, function() {
-                    reloadPlayListItem();
-                },function()
-                {
-                }
-            );
+            var itemToDelete = {id: item? item.id : vm.selectedPlaylistItem.id};
+            var playList = vm.selectedPlaylist;
 
+            playlistService.removeItemFromPlaylist(playList, itemToDelete);
         };
 
         var checkIsVideoInCurrentPlaylist = function () {
             var result = true;
-            var currentPlayListItem = vm.getSpecificPlaylist(vm.selectedPlaylistId);
-            if(currentPlayListItem)
-            {
-
+            var currentPlayListItem = vm.selectedPlaylist;
+            if(currentPlayListItem){
                 result = _.findIndex(currentPlayListItem.items, function (item) {
                     return item.id === vm.selectedPlaylistItem.id;
                 }) >= 0 ;
@@ -105,10 +51,11 @@
         };
 
         vm.setCurrentPlaylist = function (playlist) {
-            if (!vm.selectedPlaylistId || vm.selectedPlaylistId !== playlist.id) {
-                vm.selectedPlaylistId = playlist.id;
+            if (!vm.selectedPlaylist || vm.selectedPlaylist.id !== playlist.id) {
+                $scope.selectedPlaylist = playlist;
+                vm.selectedPlaylist = playlist;
                 if(!playlist.items.length){
-                    fillPlaylistWithVideos(playlist)
+                    playlistService.fillPlaylistItems(playlist)
                         .then(function () {
                             if(playlist.items.length)
                                 vm.setCurrentPlaylistItem(playlist.items[0]);
@@ -121,15 +68,12 @@
         };
 
         vm.setCurrentPlaylistItem = function(playlistItem){
-            if(playlistItem)
-            {
+            if(playlistItem){
                 vm.selectedPlaylistItem.title = playlistItem.snippet.title;
                 vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' + playlistItem.snippet.resourceId.videoId + '?list=' + playlistItem.snippet.playlistId;
                 vm.selectedPlaylistItem.videoId = playlistItem.snippet.resourceId.videoId;
                 vm.selectedPlaylistItem.id = playlistItem.id;
-            }
-            else
-            {
+            } else {
                 vm.selectedPlaylistItem.title = 'video not found';
                 vm.selectedPlaylistItem.src = '';
                 vm.selectedPlaylistItem.videoId = '';
@@ -145,7 +89,7 @@
         var prevView;
 
         vm.toggleEdit = function(){
-            if(isEditMode()){
+            if(vm.isEditMode()){
                 $state.go(!prevView || prevView == 'home.edit' ? 'home.player' : prevView);
             }
             else{
@@ -154,7 +98,7 @@
             }
         };
 
-        var isEditMode = function(){
+        vm.isEditMode = function(){
             return vm.currentView() == 'home.edit';
         };
     }

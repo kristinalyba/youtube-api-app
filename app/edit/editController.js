@@ -1,15 +1,16 @@
 (function(){
     "use strict";
-    angular.module("ytApp").controller("EditController", ["playlistResource", EditController]);
+    angular.module("ytApp").controller("EditController", ["playlistService", EditController]);
 
-    function EditController(playlistResource){
+    function EditController(playlistService){
         var vm = this;
         vm.newPlaylist = { snippet: {title: "", description: ""}, addMode: false};
 
+        vm.playlistService = playlistService;
+
         vm.addNewPlaylistAccept = function(){
-            addNewPlaylist(vm.newPlaylist);
+            playlistService.addPlaylist(vm.newPlaylist);
             vm.toggleAddPlaylist();
-            loadPlaylists();
         };
 
         vm.addNewPlaylistReject = function(){
@@ -17,8 +18,7 @@
         };
 
         vm.removePlaylist = function(playlist){
-            removePlaylist(playlist);
-            loadPlaylists();
+            playlistService.removePlaylist(playlist);
         };
 
         vm.toggleAddPlaylist = function(){
@@ -33,8 +33,8 @@
 
         vm.togglePlaylistEdit = function(playlist){
             if(!playlist.editMode){
-                playlist.snippet.tempTitle = playlist.snippet.title;
-                playlist.snippet.tempDescription = playlist.snippet.description;
+                playlist.snippet.originTitle = playlist.snippet.title;
+                playlist.snippet.originDescription = playlist.snippet.description;
                 playlist.editMode = true;
             } else {
                 playlist.editMode = false;
@@ -42,62 +42,19 @@
         };
 
         vm.playlistChangesAccept = function(playlist){
-            playlist.snippet.description = playlist.snippet.tempDescription;
-            playlist.snippet.title = playlist.snippet.tempTitle;
-            updatePlaylist(playlist);
-            vm.togglePlaylistEdit(playlist);
+            playlistService.updatePlaylist(playlist)
+                .then(function playlistUpdated(data){
+                vm.togglePlaylistEdit(playlist);
+            }, function playlistNotUpdated(data){
+                vm.playlistChangesReject();
+            });
         };
 
         vm.playlistChangesReject = function(playlist){
-            playlist.snippet.tempTitle = playlist.snippet.title;
-            playlist.snippet.tempDescription = playlist.snippet.description;
+                playlist.snippet.title = playlist.snippet.originTitle;
+                playlist.snippet.description = playlist.snippet.originDescription;
             vm.togglePlaylistEdit(playlist);
         };
 
-        var loadPlaylists = function(){
-            playlistResource.query(function playlistsLoadedCallback(data){
-                vm.playlists = data;
-            });
-        };
-
-        var addNewPlaylist = function(playlist){
-            var newitem = new playlistResource();
-            newitem.snippet = playlist.snippet;
-
-            playlistResource.save(newitem, function(data) {
-                setTimeout(loadPlaylists, 500);
-            },function(data){
-                // oops!
-            });
-        };
-
-        var removePlaylist = function(playlist)
-        {
-            if(!confirm('Are you sure you want to remove playlist?'))
-                return;
-
-            var deletingItem = new playlistResource();
-            deletingItem.id = playlist.id;
-
-            playlistResource.delete(deletingItem, function(data) {
-                setTimeout(loadPlaylists, 500);
-            },function(data){
-                // oops!
-            });
-        };
-
-        var updatePlaylist = function(playlist){
-            var updatingItem = new playlistResource();
-            updatingItem.id = playlist.id;
-            updatingItem.snippet = playlist.snippet;
-
-            playlistResource.update(updatingItem, function(data) {
-                setTimeout(loadPlaylists, 500);
-            },function(data){
-                // oops!
-            });
-        };
-
-        loadPlaylists();
     };
 }());
