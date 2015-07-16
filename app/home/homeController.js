@@ -26,26 +26,27 @@
         });
 
         vm.addToPlaylist = function () {
-            var newItem = {id: vm.selectedPlaylistItem.videoId};
+            var newItem = {id: vm.selectedPlaylistItem};
             var playList = vm.selectedPlaylist;
 
-            playlistService.addItemToPlaylist(playList, newItem);
+            playlistService.addItemToPlaylist(playList, newItem)
+                .then(checkIsVideoInCurrentPlaylist);
         };
 
         vm.removeFromPlaylist = function (item) {
             var itemToDelete = {id: item? item.id : vm.selectedPlaylistItem.id};
             var playList = vm.selectedPlaylist;
 
-            playlistService.removeItemFromPlaylist(playList, itemToDelete);
+            playlistService.removeItemFromPlaylist(playList, itemToDelete)
+                .then(checkIsVideoInCurrentPlaylist);
         };
 
         var checkIsVideoInCurrentPlaylist = function () {
             var result = true;
-            var currentPlayListItem = vm.selectedPlaylist;
-            if(currentPlayListItem){
-                result = _.findIndex(currentPlayListItem.items, function (item) {
-                    return item.id === vm.selectedPlaylistItem.id;
-                }) >= 0 ;
+            if(vm.selectedPlaylist){
+                result = _.findIndex(vm.selectedPlaylist.items, function (item) {
+                    return item.snippet.resourceId.videoId === vm.selectedPlaylistItem.videoId;
+                }) !== -1 ;
             }
             vm.isVideoInCurrentPlaylist = result;
         };
