@@ -48,7 +48,7 @@
             <div class="list-group playlist-control">
                 <div ng-repeat="item in vm.selectedPlaylist.items">
                     <div class="list-group-item playlist-item">
-                        <span ng-click="vm.setCurrentPlaylistItem(item)" class="video-item">{{item.snippet.title}}</span>
+                        <span ng-click="vm.setCurrentPlaylistItem(item)" class="clickable">{{item.snippet.title}}</span>
                         <button type="button"
                                 class="close-button pull-right top-right-corner"
                                 ng-show="vm.isEditMode()"

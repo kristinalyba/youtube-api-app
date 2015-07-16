@@ -79,7 +79,7 @@
     border-radius: 50%;
 }
 
-.video-item{
+.clickable{
     cursor: pointer;
 }
 

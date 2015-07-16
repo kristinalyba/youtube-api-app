@@ -41,10 +41,10 @@
                         <i class="glyphicon glyphicon-user" ng-if="!vm.userInfo.picture"></i>
                     </a>
                 </li>
-                <li><a ng-click="vm.logOut()"><i class="glyphicon glyphicon-off"></i></a></li>
+                <li><a ng-click="vm.logOut()" class="clickable"><i class="glyphicon glyphicon-off"></i></a></li>
             </ul>
         </div>
-        <div class="navbar-collapse collapse" ng-if="!vm.isLoggedIn">
+        <div class="navbar-collapse collapse clickable" ng-if="!vm.isLoggedIn">
             <ul class="nav navbar-nav navbar-right">
                 <li><a ng-click="vm.logIn()">Log In</a></li>
             </ul>
