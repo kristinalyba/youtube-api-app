@@ -23,6 +23,7 @@
 
             return playlistResource.save(newitem).$promise
                 .then(function playlistAdded(data){
+                data.items = [];
                 svc.playlists.splice(0, 0, data);
             }, function playlistNotAdded(data){
 
