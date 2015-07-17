@@ -1,14 +1,11 @@
-/**
- * Created by k.lyba on 13.07.2015.
- */
 (function () {
     "use strict";
 
     angular
         .module("ytApp")
-        .controller("MainController", ["$scope", "$state", "authorizationService", MainController]);
+        .controller("MainController", ["$state", "authorizationService", MainController]);
 
-    function MainController($scope, $state, authorizationService) {
+    function MainController($state, authorizationService) {
         var vm = this;
         vm.isLoggedIn = false;
         vm.userInfo = {};

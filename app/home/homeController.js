@@ -27,17 +27,15 @@
 
         vm.addToPlaylist = function () {
             var newItem = {id: vm.selectedPlaylistItem};
-            var playList = vm.selectedPlaylist;
 
-            playlistService.addItemToPlaylist(playList, newItem)
+            playlistService.addItemToPlaylist(vm.selectedPlaylist, newItem)
                 .then(checkIsVideoInCurrentPlaylist);
         };
 
         vm.removeFromPlaylist = function (item) {
             var itemToDelete = {id: item? item.id : vm.selectedPlaylistItem.id};
-            var playList = vm.selectedPlaylist;
 
-            playlistService.removeItemFromPlaylist(playList, itemToDelete)
+            playlistService.removeItemFromPlaylist(vm.selectedPlaylist, itemToDelete)
                 .then(checkIsVideoInCurrentPlaylist);
         };
 
