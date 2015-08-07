@@ -8,8 +8,8 @@
     <title>YouTube API training app</title>
 
     <!-- Style sheets -->
-    <link rel="stylesheet" href="css/style.css">
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body ng-app="ytApp" ng-controller="MainController as vm">
 <nav class="navbar navbar-inverse">
@@ -35,7 +35,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#">{{vm.userInfo.fullName}} <img class="user-minipic"
+                    <a>{{vm.userInfo.fullName}} <img class="user-minipic"
                                                                                ng-if="vm.userInfo.picture"
                                                                                ng-src="{{vm.userInfo.picture}}">
                         <i class="glyphicon glyphicon-user" ng-if="!vm.userInfo.picture"></i>
