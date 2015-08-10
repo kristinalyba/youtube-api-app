@@ -1,7 +1,7 @@
 <div class="jumbotron">
     <div class="row">
         <div class="col-md-9">
-            <div class="input-group" ng-show="!vm.isEditMode()">
+            <div class="input-group" ng-if="!vm.isEditMode()">
                 <input type="text" ng-model="vm.searchText" class="form-control" ng-keyup="$event.keyCode == 13 && vm.getSearchResult()" placeholder="Search for...">
                 <span class="input-group-btn">
                     <button class="btn btn-default" ng-click="vm.getSearchResult()" type="button"><span class="glyphicon glyphicon-search"></span>
@@ -44,7 +44,7 @@
                 <div ng-repeat="item in vm.selectedPlaylist.items">
                     <div class="list-group-item playlist-item">
                         <span ng-click="vm.setCurrentPlaylistItem(item)" class="clickable">{{item.snippet.title}}</span>
-                        <button type="button" class="close-button pull-right top-right-corner" ng-show="vm.isEditMode()" title="Remove playlist" ng-click="vm.removeFromPlaylist(item)">
+                        <button type="button" class="close-button pull-right top-right-corner" ng-if="vm.isEditMode()" title="Remove playlist" ng-click="vm.removeFromPlaylist(item)">
                             <i class="glyphicon glyphicon-remove"></i>
                         </button>
                     </div>
