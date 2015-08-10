@@ -1,5 +1,5 @@
-.playlist-dropdown {
-    width: 100%;
+#playlistDropdown {
+    width: 160px;
 }
 .playlist-control {
     margin-top: 10px;

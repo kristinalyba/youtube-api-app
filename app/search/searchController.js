@@ -3,19 +3,19 @@
 
     angular
         .module('ytApp')
-        .controller('SearchController', ['$q', 'playlistService', '$scope', 'searchResource', '$stateParams', SearchController]);
+        .controller('SearchController', ['$q', 'playlistService', '$scope', 'SearchResource', '$stateParams', SearchController]);
 
-    function SearchController($q, playlistService, $scope, searchResource, $stateParams) {
+    function SearchController($q, playlistService, $scope, SearchResource, $stateParams) {
         var vm = this;
         vm.playlistService = playlistService;
         vm.searchResult = [];
         vm.searchText = $stateParams.searchText;
 
         var performSearch = function () {
-            searchResource.query({
+            SearchResource.query({
                 q: vm.searchText
             }, function (data) {
-                vm.searchResult = $.map(data.items, function (searchResultItem) {
+                vm.searchResult = _.map(data.items, function (searchResultItem) {
                     return searchResultItem.id.kind === 'youtube#channel' ? null : searchResultItem
                 });
                 var promise = $scope.selectedPlaylist.items.length ? $q.when([]) : playlistService.fillPlaylistItems($scope.selectedPlaylist);

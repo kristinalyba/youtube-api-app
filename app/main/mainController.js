@@ -1,9 +1,9 @@
 (function () {
-    "use strict";
+    'use strict';
 
     angular
-        .module("ytApp")
-        .controller("MainController", ["$state", "authorizationService", MainController]);
+        .module('ytApp')
+        .controller('MainController', ['$state', 'authorizationService', MainController]);
 
     function MainController($state, authorizationService) {
         var vm = this;
@@ -19,8 +19,7 @@
             if (authorizationService.isLoggedIn) {
                 vm.isLoggedIn = true;
                 $state.go('home.player');
-            }
-            else {
+            } else {
                 $state.go('welcome');
             }
         };

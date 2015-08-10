@@ -1,5 +1,5 @@
-(function(){
-    "use strict";
-    angular.module('common.services', ['angular-google-gapi','ngResource'])
+(function () {
+    'use strict';
+    angular.module('common.services', ['angular-google-gapi', 'ngResource'])
 
 }());

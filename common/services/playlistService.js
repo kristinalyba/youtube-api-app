@@ -1,16 +1,16 @@
 (function () {
     angular
         .module('ytApp')
-        .service('playlistService', ['playlistResource', 'playlistitemsResource', playlistService]);
+        .service('playlistService', ['PlaylistResource', 'PlaylistItemsResource', playlistService]);
 
-    function playlistService(playlistResource, playlistitemsResource) {
+    function playlistService(PlaylistResource, PlaylistItemsResource) {
         var svc = this;
 
         svc.playlists = [];
         svc.playlistsPromise = null;
 
         function loadPlaylists() {
-            svc.playlistsPromise = playlistResource.query(function playlistsLoadedCallback(data) {
+            svc.playlistsPromise = PlaylistResource.query(function playlistsLoadedCallback(data) {
                 svc.playlists = data.items;
                 for (var i = 0; i < svc.playlists.length; i++) {
                     svc.playlists[i].items = [];
@@ -20,10 +20,10 @@
         loadPlaylists();
 
         svc.addPlaylist = function (playlist) {
-            var newitem = new playlistResource();
-            newitem.snippet = playlist.snippet;
-
-            return playlistResource.save(newitem).$promise
+            var newitem = new PlaylistResource({
+                snippet: playlist.snippet
+            });
+            return PlaylistResource.save(newitem).$promise
                 .then(function playlistAdded(data) {
                     data.items = [];
                     svc.playlists.splice(0, 0, data);
@@ -36,10 +36,11 @@
             if (!confirm('Are you sure you want to remove playlist?')) {
                 return;
             }
-            var deletingItem = new playlistResource();
-            deletingItem.id = playlist.id;
+            var deletingItem = new PlaylistResource({
+                id: playlist.id
+            });
 
-            return playlistResource.delete(deletingItem).$promise
+            return PlaylistResource.delete(deletingItem).$promise
                 .then(function playlistRemoved(data) {
                     var indx = _.indexOf(svc.playlists, playlist);
                     if (indx !== -1) {
@@ -51,24 +52,26 @@
         }
 
         svc.updatePlaylist = function (playlist) {
-            var updatingItem = new playlistResource();
-            updatingItem.id = playlist.id;
-            updatingItem.snippet = playlist.snippet;
+            var updatingItem = new PlaylistResource({
+                id: playlist.id,
+                snippet: playlist.snippet
+            });
 
-            return playlistResource.update(updatingItem).$promise;
+            return PlaylistResource.update(updatingItem).$promise;
         };
 
         svc.addItemToPlaylist = function (playlist, item) {
-            var newitem = new playlistitemsResource();
-            newitem.snippet = {
-                playlistId: playlist.id,
-                resourceId: {
-                    kind: 'youtube#video',
-                    videoId: item.id.videoId
+            var newitem = new PlaylistItemsResource({
+                snippet: {
+                    playlistId: playlist.id,
+                    resourceId: {
+                        kind: 'youtube#video',
+                        videoId: item.id.videoId
+                    }
                 }
-            };
+            });
 
-            return playlistitemsResource.save(newitem, function itemAddedToPlaylist(data) {
+            return PlaylistItemsResource.save(newitem, function itemAddedToPlaylist(data) {
                 var indx = _.indexOf(svc.playlists, playlist);
                 if (indx !== -1) {
                     svc.playlists[indx].items.splice(0, 0, data)
@@ -79,10 +82,11 @@
         };
 
         svc.removeItemFromPlaylist = function (playlist, item) {
-            var deleteItem = new playlistitemsResource();
-            deleteItem.id = item.id;
+            var deleteItem = new PlaylistItemsResource({
+                id: playlist.id
+            });
 
-            return playlistitemsResource.delete(deleteItem, function itemRemovedFromPlaylist() {
+            return PlaylistItemsResource.delete(deleteItem, function itemRemovedFromPlaylist() {
                 var playlistIndx = _.indexOf(svc.playlists, playlist);
                 if (playlistIndx !== -1) {
                     var itemIndx = _.findIndex(svc.playlists[playlistIndx].items,
@@ -99,7 +103,7 @@
         };
 
         svc.fillPlaylistItems = function (playlist) {
-            return playlistitemsResource.query({
+            return PlaylistItemsResource.query({
                 playlistId: playlist.id
             }, function (data) {
                 var indx = getPlaylistIndex(playlist);
