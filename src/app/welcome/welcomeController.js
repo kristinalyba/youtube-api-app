@@ -3,9 +3,9 @@
 
     angular
         .module('ytApp')
-        .controller('MainController', ['$state', 'authorizationService', MainController]);
+        .controller('WelcomeController', ['$state', 'authorizationService', WelcomeController]);
 
-    function MainController($state, authorizationService) {
+    function WelcomeController($state, authorizationService) {
         var vm = this;
         vm.isLoggedIn = false;
         vm.userInfo = {};
@@ -20,7 +20,7 @@
                 vm.isLoggedIn = true;
                 $state.go('home.player');
             } else {
-                $state.go('main');
+                $state.go('welcome');
             }
         };
 
@@ -42,7 +42,7 @@
             authorizationService.logOut()
                 .then(null, function (data) {
                     vm.isLoggedIn = false;
-                    $state.go('main');
+                    $state.go('welcome');
                 });
         };
     }

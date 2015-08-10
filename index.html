@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="src/styles/style.css">
 </head>
 
-<body ng-app="ytApp" ng-controller="MainController as vm" class="ng-cloak">
+<body ng-app="ytApp" ng-controller="WelcomeController as vm" class="ng-cloak">
     <nav class="navbar navbar-inverse">
         <div class="container">
-            <a ui-sref="main" class="navbar-brand">YouTube API App</a>
+            <a ui-sref="welcome" class="navbar-brand">YouTube API App</a>
 
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -74,9 +74,9 @@
 
     <!-- Controllers -->
     <script src="src/app/home/homeController.js"></script>
-    <script src="src/app/search/searchController.js"></script>
-    <script src="src/app/edit/editController.js"></script>
-    <script src="src/app/main/mainController.js"></script>
+    <script src="src/app/home/search/searchController.js"></script>
+    <script src="src/app/home/edit/editController.js"></script>
+    <script src="src/app/welcome/welcomeController.js"></script>
 
 </body>
 

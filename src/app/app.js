@@ -17,9 +17,9 @@
             $urlRouterProvider.otherwise('/home/player');
 
             $stateProvider
-                .state('main', {
+                .state('welcome', {
                     url: '/',
-                    templateUrl: 'src/app/main/mainView.html'
+                    templateUrl: 'src/app/welcome/welcomeView.html'
                 })
                 .state('home', {
                     abstract: true,
@@ -36,24 +36,24 @@
                                             .setAuthToken();
                                     },
                                     function () {
-                                        $state.go('main');
+                                        $state.go('welcome');
                                     });
                         }
                     }
                 })
                 .state('home.player', {
                     url: '/player',
-                    templateUrl: 'src/app/player/playerView.html'
+                    templateUrl: 'src/app/home/player/playerView.html'
                 })
                 .state('home.search', {
                     url: '/search/:searchText',
-                    templateUrl: 'src/app/search/searchView.html',
+                    templateUrl: 'src/app/home/search/searchView.html',
                     controller: 'SearchController',
                     controllerAs: 'vm'
                 })
                 .state('home.edit', {
                     url: '/edit',
-                    templateUrl: 'src/app/edit/editView.html',
+                    templateUrl: 'src/app/home/edit/editView.html',
                     controller: 'EditController',
                     controllerAs: 'vm'
                 });
