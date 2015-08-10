@@ -40,7 +40,7 @@
 
         vm.logOut = function () {
             authorizationService.logOut()
-                .then(null, function (data) {
+                .error(function (data) {
                     vm.isLoggedIn = false;
                     $state.go('welcome');
                 });
