@@ -11,7 +11,6 @@
         vm.selectedPlaylist = {};
         vm.selectedPlaylist.empty = true;
         vm.selectedPlaylistItem = {};
-        vm.isVideoInCurrentPlaylist = true;
         vm.searchText = '';
 
         vm.getSearchResult = function () {
@@ -33,8 +32,7 @@
                 id: vm.selectedPlaylistItem
             };
 
-            playlistService.addItemToPlaylist(vm.selectedPlaylist, newItem)
-                .then(checkIsVideoInCurrentPlaylist);
+            playlistService.addItemToPlaylist(vm.selectedPlaylist, newItem);
         };
 
         vm.removeFromPlaylist = function (item) {
@@ -42,11 +40,10 @@
                 id: item ? item.id : vm.selectedPlaylistItem.id
             };
 
-            playlistService.removeItemFromPlaylist(vm.selectedPlaylist, itemToDelete)
-                .then(checkIsVideoInCurrentPlaylist);
+            playlistService.removeItemFromPlaylist(vm.selectedPlaylist, itemToDelete);
         };
 
-        var checkIsVideoInCurrentPlaylist = function () {
+        vm.checkIsVideoInCurrentPlaylist = function () {
             return playlistService.isItemInPlayList(vm.selectedPlaylist, vm.selectedPlaylistItem.videoId);
         };
 
@@ -78,7 +75,6 @@
                     '?list=' + playlistItem.snippet.playlistId;
                 vm.selectedPlaylistItem.videoId = playlistItem.snippet.resourceId.videoId;
                 vm.selectedPlaylistItem.id = playlistItem.id;
-                checkIsVideoInCurrentPlaylist();
             }
         };
 
@@ -90,7 +86,7 @@
 
         vm.toggleEdit = function () {
             if (vm.isEditMode()) {
-                $state.go(!prevView || prevView == 'home.edit' ? 'home.player' : prevView);
+                $state.go(!prevView || prevView === 'home.edit' ? 'home.player' : prevView);
             } else {
                 prevView = vm.currentView();
                 $state.go('home.edit');
@@ -98,7 +94,7 @@
         };
 
         vm.isEditMode = function () {
-            return vm.currentView() == 'home.edit';
+            return vm.currentView() === 'home.edit';
         };
     }
 }());

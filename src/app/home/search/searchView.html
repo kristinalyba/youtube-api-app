@@ -22,7 +22,7 @@
             <td>
                 <div>
                     <button class="btn btn-success"
-                            ng-disabled="searchItem.alreadyInList"
+                            ng-disabled="searchItem.alreadyInList()"
                             title="Add to current playlist"
                             ng-click="vm.addToPlayList(searchItem)">
                         <i class="glyphicon glyphicon-plus"></i>
@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <button class="btn btn-error"
-                            ng-disabled="!searchItem.alreadyInList"
+                            ng-disabled="!searchItem.alreadyInList()"
                             title="Remove from current playlist"
                             ng-click="vm.removeFromPlayList(searchItem)">
                         <i class="glyphicon glyphicon-remove"></i>

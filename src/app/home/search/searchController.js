@@ -27,7 +27,7 @@
                         $scope.selectedPlaylist.items = playlistWithItems.items;
                     }
                     vm.searchResult.forEach(function(item) {
-                        item.alreadyInList = isVideoInList(item);
+                        item.alreadyInList = alreadyInListBinder(item);
                     });
                 });
             });
@@ -55,12 +55,15 @@
 
         vm.addToPlayList = function (searchItem) {
             if (!isVideoInList(searchItem)) {
-                playlistService.addItemToPlaylist($scope.selectedPlaylist, searchItem)
-                    .then(function () {
-                        searchItem.alreadyInList = isVideoInList(searchItem);
-                    });
+                playlistService.addItemToPlaylist($scope.selectedPlaylist, searchItem);
             }
         };
+
+        function alreadyInListBinder(item) {
+            return function() {
+                return isVideoInList(item);
+            };
+        }
 
         var itemIndexInPlaylist = function (searchItem) {
             return _.findIndex($scope.selectedPlaylist.items, function (item) {
@@ -71,12 +74,9 @@
         vm.removeFromPlayList = function (searchItem) {
             var index = itemIndexInPlaylist(searchItem);
 
-            if (index !== -1 && searchItem.alreadyInList) {
+            if (index !== -1 && searchItem.alreadyInList()) {
                 playlistService.removeItemFromPlaylist($scope.selectedPlaylist,
-                    $scope.selectedPlaylist.items[index]).then(
-                    function videoRemovedFromPlaylist(data) {
-                        searchItem.alreadyInList = isVideoInList(searchItem);
-                    });
+                    $scope.selectedPlaylist.items[index]);
             }
         };
 
