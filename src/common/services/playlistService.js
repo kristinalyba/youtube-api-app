@@ -9,15 +9,12 @@
         svc.playlists = [];
         svc.playlistsPromise = null;
 
-        function loadPlaylists() {
-            svc.playlistsPromise = PlaylistResource.query(function playlistsLoadedCallback(data) {
-                svc.playlists = data.items;
-                for (var i = 0; i < svc.playlists.length; i++) {
-                    svc.playlists[i].items = [];
-                }
-            }).$promise;
-        }
-        loadPlaylists();
+        svc.playlistsPromise = PlaylistResource.query(function playlistsLoadedCallback(data) {
+            svc.playlists = data.items;
+            for (var i = 0; i < svc.playlists.length; i++) {
+                svc.playlists[i].items = [];
+            }
+        }).$promise;
 
         svc.addPlaylist = function (playlist) {
             var newitem = new PlaylistResource({
