@@ -3,9 +3,12 @@
 
     angular
         .module('ytApp')
-        .controller('SearchController', ['$q', 'playlistService', '$scope', 'SearchResource', '$stateParams', SearchController]);
+        .controller('SearchController', SearchController);
 
-    function SearchController($q, playlistService, $scope, SearchResource, $stateParams) {
+    SearchController.$inject = ['$q', '$scope', '$stateParams',
+                                'playlistService', 'SearchResource'];
+
+    function SearchController($q, $scope, $stateParams, playlistService, SearchResource) {
         var vm = this;
         vm.playlistService = playlistService;
         vm.searchResult = [];
@@ -15,20 +18,36 @@
             SearchResource.query({
                 q: vm.searchText
             }, function (data) {
-                vm.searchResult = _.map(data.items, function (searchResultItem) {
-                    return searchResultItem.id.kind === 'youtube#channel' ? null : searchResultItem;
-                });
-                var promise = $scope.selectedPlaylist.items.length ? $q.when([]) : playlistService.fillPlaylistItems($scope.selectedPlaylist);
+                vm.searchResult = filterYoutubeChannelsAndPlaylists(data.items);
+
+                var promise = fillPlaylist();
+
                 promise.then(function (playlistWithItems) {
                     if (!$scope.selectedPlaylist.items.length) {
                         $scope.selectedPlaylist.items = playlistWithItems.items;
                     }
-                    for (var i = 0; i < vm.searchResult.length; i++) {
-                        vm.searchResult[i].alreadyInList = isVideoInList(vm.searchResult[i]);
-                    }
+                    vm.searchResult.forEach(function(item) {
+                        item.alreadyInList = isVideoInList(item);
+                    });
                 });
             });
         };
+
+        function fillPlaylist() {
+            return $scope.selectedPlaylist.items.length ?
+                                $q.when([]) :
+                                playlistService.fillPlaylistItems($scope.selectedPlaylist);
+        }
+
+        function filterYoutubeChannelsAndPlaylists(items) {
+            var arr = [];
+            items.forEach(function(item) {
+                if (item.id.kind === 'youtube#video') {
+                    arr.push(item);
+                }
+            });
+            return arr;
+        }
 
         function isVideoInList(searchItem) {
             return itemIndexInPlaylist(searchItem) !== -1;
