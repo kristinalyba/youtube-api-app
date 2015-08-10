@@ -47,13 +47,7 @@
         };
 
         var checkIsVideoInCurrentPlaylist = function () {
-            var result = true;
-            if (vm.selectedPlaylist) {
-                result = _.findIndex(vm.selectedPlaylist.items, function (item) {
-                    return item.snippet.resourceId.videoId === vm.selectedPlaylistItem.videoId;
-                }) !== -1;
-            }
-            vm.isVideoInCurrentPlaylist = result;
+            return playlistService.isItemInPlayList(vm.selectedPlaylist, vm.selectedPlaylistItem.videoId);
         };
 
         vm.setCurrentPlaylist = function (playlist) {

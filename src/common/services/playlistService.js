@@ -111,6 +111,16 @@
             }).$promise;
         };
 
+        svc.isItemInPlayList = function(playlist, videoId) {
+            var result = true;
+            if (playlist) {
+                result = _.findIndex(playlist.items, function (plItem) {
+                    return plItem.snippet.resourceId.videoId === videoId;
+                }) !== -1;
+            }
+            return result;
+        };
+
         var getPlaylistIndex = function (searchItem) {
             return _.findIndex(svc.playlists, function (playlist) {
                 return playlist.id === searchItem.id;

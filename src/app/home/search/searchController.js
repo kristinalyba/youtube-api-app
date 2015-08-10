@@ -50,7 +50,7 @@
         }
 
         function isVideoInList(searchItem) {
-            return itemIndexInPlaylist(searchItem) !== -1;
+            return playlistService.isItemInPlayList($scope.selectedPlaylist, searchItem.id.videoId);
         }
 
         vm.addToPlayList = function (searchItem) {
