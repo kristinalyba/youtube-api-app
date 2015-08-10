@@ -112,13 +112,9 @@
         };
 
         svc.isItemInPlayList = function(playlist, videoId) {
-            var result = true;
-            if (playlist) {
-                result = _.findIndex(playlist.items, function (plItem) {
-                    return plItem.snippet.resourceId.videoId === videoId;
-                }) !== -1;
-            }
-            return result;
+            return _.any(playlist.items, function (item) {
+                return item.snippet.resourceId.videoId === videoId;
+            });
         };
 
         var getPlaylistIndex = function (searchItem) {
