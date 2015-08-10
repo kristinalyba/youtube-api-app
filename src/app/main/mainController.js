@@ -20,7 +20,7 @@
                 vm.isLoggedIn = true;
                 $state.go('home.player');
             } else {
-                $state.go('welcome');
+                $state.go('main');
             }
         };
 
@@ -42,7 +42,7 @@
             authorizationService.logOut()
                 .then(null, function (data) {
                     vm.isLoggedIn = false;
-                    $state.go('welcome');
+                    $state.go('main');
                 });
         };
     }

@@ -9,8 +9,8 @@
     <title>YouTube API training app</title>
 
     <!-- Style sheets -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/style.css">
 </head>
 
 <body ng-app="ytApp" ng-controller="MainController as vm" class="ng-cloak">
@@ -54,29 +54,29 @@
         <div ui-view></div>
     </div>
     <!-- Library Scripts -->
-    <script src="js/angular.js"></script>
-    <script src="js/angular-resource.js"></script>
-    <script src="js/angular-ui-router.js"></script>
-    <script src="js/angular-google-gapi.js"></script>
-    <script src="js/underscore-min.js"></script>
-    <script src="js/ui-bootstrap-tpls-0.13.2.min.js"></script>
+    <script src="vendor/angular/angular.js"></script>
+    <script src="vendor/angular/angular-resource.js"></script>
+    <script src="vendor/angular/angular-ui-router.js"></script>
+    <script src="vendor/angular-google-api/angular-google-gapi.js"></script>
+    <script src="vendor/underscore/underscore-min.js"></script>
+    <script src="vendor/bootstrap/js/ui-bootstrap-tpls-0.13.2.min.js"></script>
 
     <!-- Application Scripts -->
-    <script src="app/app.js"></script>
+    <script src="src/app/app.js"></script>
 
     <!-- Services -->
-    <script src="common/services/common.services.js"></script>
-    <script src="common/services/authorizationService.js"></script>
-    <script src="common/services/playlistService.js"></script>
-    <script src="common/resources/playlistResource.js"></script>
-    <script src="common/resources/playlistitemsResource.js"></script>
-    <script src="common/resources/searchResource.js"></script>
+    <script src="src/common/services/common.services.js"></script>
+    <script src="src/common/services/authorizationService.js"></script>
+    <script src="src/common/services/playlistService.js"></script>
+    <script src="src/common/resources/playlistResource.js"></script>
+    <script src="src/common/resources/playlistItemsResource.js"></script>
+    <script src="src/common/resources/searchResource.js"></script>
 
     <!-- Controllers -->
-    <script src="app/home/homeController.js"></script>
-    <script src="app/search/searchController.js"></script>
-    <script src="app/edit/editController.js"></script>
-    <script src="app/main/mainController.js"></script>
+    <script src="src/app/home/homeController.js"></script>
+    <script src="src/app/search/searchController.js"></script>
+    <script src="src/app/edit/editController.js"></script>
+    <script src="src/app/main/mainController.js"></script>
 
 </body>
 

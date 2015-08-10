@@ -16,7 +16,7 @@
                 q: vm.searchText
             }, function (data) {
                 vm.searchResult = _.map(data.items, function (searchResultItem) {
-                    return searchResultItem.id.kind === 'youtube#channel' ? null : searchResultItem
+                    return searchResultItem.id.kind === 'youtube#channel' ? null : searchResultItem;
                 });
                 var promise = $scope.selectedPlaylist.items.length ? $q.when([]) : playlistService.fillPlaylistItems($scope.selectedPlaylist);
                 promise.then(function (playlistWithItems) {

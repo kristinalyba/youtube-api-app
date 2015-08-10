@@ -62,5 +62,5 @@
             vm.togglePlaylistEdit(playlist);
         };
 
-    };
+    }
 }());

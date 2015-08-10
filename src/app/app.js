@@ -19,12 +19,12 @@
             $stateProvider
                 .state('main', {
                     url: '/',
-                    templateUrl: 'app/main/mainView.html'
+                    templateUrl: 'src/app/main/mainView.html'
                 })
                 .state('home', {
                     abstract: true,
                     url: '/home',
-                    templateUrl: 'app/home/homeView.html',
+                    templateUrl: 'src/app/home/homeView.html',
                     controller: 'HomeController',
                     controllerAs: 'vm',
                     resolve: {
@@ -43,17 +43,17 @@
                 })
                 .state('home.player', {
                     url: '/player',
-                    templateUrl: 'app/player/playerView.html'
+                    templateUrl: 'src/app/player/playerView.html'
                 })
                 .state('home.search', {
                     url: '/search/:searchText',
-                    templateUrl: 'app/search/searchView.html',
+                    templateUrl: 'src/app/search/searchView.html',
                     controller: 'SearchController',
                     controllerAs: 'vm'
                 })
                 .state('home.edit', {
                     url: '/edit',
-                    templateUrl: 'app/edit/editView.html',
+                    templateUrl: 'src/app/edit/editView.html',
                     controller: 'EditController',
                     controllerAs: 'vm'
                 });

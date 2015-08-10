@@ -44,12 +44,12 @@
                 .then(function playlistRemoved(data) {
                     var indx = _.indexOf(svc.playlists, playlist);
                     if (indx !== -1) {
-                        svc.playlists.splice(indx, 1)
+                        svc.playlists.splice(indx, 1);
                     }
                 }, function playlistNotRemoved(data) {
 
                 });
-        }
+        };
 
         svc.updatePlaylist = function (playlist) {
             var updatingItem = new PlaylistResource({
@@ -74,8 +74,8 @@
             return PlaylistItemsResource.save(newitem, function itemAddedToPlaylist(data) {
                 var indx = _.indexOf(svc.playlists, playlist);
                 if (indx !== -1) {
-                    svc.playlists[indx].items.splice(0, 0, data)
-                };
+                    svc.playlists[indx].items.splice(0, 0, data);
+                }
             }, function itemNotAddedToPlaylist(data) {
 
             }).$promise;
@@ -83,7 +83,7 @@
 
         svc.removeItemFromPlaylist = function (playlist, item) {
             var deleteItem = new PlaylistItemsResource({
-                id: playlist.id
+                id: item.id
             });
 
             return PlaylistItemsResource.delete(deleteItem, function itemRemovedFromPlaylist() {
@@ -94,8 +94,8 @@
                             return playlistItem.id === deleteItem.id;
                         });
                     if (itemIndx !== -1) {
-                        svc.playlists[playlistIndx].items.splice(itemIndx, 1)
-                    };
+                        svc.playlists[playlistIndx].items.splice(itemIndx, 1);
+                    }
                 }
             }, function itemNotRemovedFromPlaylist(data) {
 
@@ -109,12 +109,12 @@
                 var indx = getPlaylistIndex(playlist);
                 svc.playlists[indx].items = data.items;
             }).$promise;
-        }
+        };
 
         var getPlaylistIndex = function (searchItem) {
             return _.findIndex(svc.playlists, function (playlist) {
                 return playlist.id === searchItem.id;
             });
         };
-    };
+    }
 }());
