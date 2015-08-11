@@ -6,13 +6,16 @@
         .factory('SearchResource', ['$resource', SearchResource]);
 
     function SearchResource($resource) {
+        var MAX_RESULTS = 50;
+        var YOUTUBE_SEARCH_REST_URL = 'https://www.googleapis.com/youtube/v3/search';
+
         return $resource(
-            'https://www.googleapis.com/youtube/v3/search', null, {
+            YOUTUBE_SEARCH_REST_URL, null, {
                 'query': {
                     method: 'GET',
                     params: {
                         part: 'snippet',
-                        maxResults: 50,
+                        maxResults: MAX_RESULTS,
                         q: '@q'
                     }
                 }

@@ -6,8 +6,11 @@
         .factory('PlaylistResource', ['$resource', PlaylistResource]);
 
     function PlaylistResource($resource) {
+        var MAX_RESULTS = 50;
+        var YOUTUBE_PLAYLISTS_REST_URL = 'https://content.googleapis.com/youtube/v3/playlists';
+
         return $resource(
-            'https://content.googleapis.com/youtube/v3/playlists', null, {
+            YOUTUBE_PLAYLISTS_REST_URL, null, {
                 'get': {
                     method: 'GET',
                     params: {
@@ -25,7 +28,7 @@
                     params: {
                         part: 'snippet',
                         mine: 'true',
-                        maxResults: 50
+                        maxResults: MAX_RESULTS
                     }
                 },
                 'remove': {
