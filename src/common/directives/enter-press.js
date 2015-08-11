@@ -2,7 +2,6 @@
     'use strict';
     angular.module('directives').directive('enterPress', EnterPressDirective);
 
-    //EnterPressDirective.$inject = ['$scope'];
     function EnterPressDirective() {
         var ENTER_KEY_CODE = 13;
 
