@@ -26,15 +26,11 @@
                         if (!$scope.selectedPlaylist.items.length) {
                             $scope.selectedPlaylist.items = playlistWithItems.items;
                         }
-                        vm.searchResult.forEach(function (item) {
-                            item.alreadyInList = alreadyInListBinder(item);
-                        });
+                        addAlreadyInPlaylistProp();
                     });
                 } else {
                     if (playlistService.playlists.length) {
                         humane.log('Select a playlist first');
-                    } else {
-                        humane.log('For a start - add at least one playlist');
                     }
                 }
             });
@@ -56,13 +52,36 @@
             return arr;
         }
 
+        function onPlayListSelected() {
+            if (vm.searchResult && _.any(vm.searchResult, function (item) {
+                    return !item.alreadyInList;
+                })) {
+                addAlreadyInPlaylistProp();
+            }
+        }
+
+        function addAlreadyInPlaylistProp() {
+            vm.searchResult.forEach(function (item) {
+                item.alreadyInList = alreadyInListBinder(item);
+            });
+        }
+
         function isVideoInList(searchItem) {
             return playlistService.isItemInPlayList($scope.selectedPlaylist, searchItem.id.videoId);
         }
 
         vm.addToPlayList = function (searchItem) {
-            if (!isVideoInList(searchItem)) {
-                playlistService.addItemToPlaylist($scope.selectedPlaylist, searchItem);
+            if (!$scope.selectedPlaylist) {
+                if (playlistService.playlists.length) {
+                    humane.log('Select a playlist first');
+                } else {
+                    humane.log('For a start - add at least one playlist');
+                }
+            } else {
+                onPlayListSelected(); //TODO move to pubsub when available
+                if (!isVideoInList(searchItem)) {
+                    playlistService.addItemToPlaylist($scope.selectedPlaylist, searchItem);
+                }
             }
         };
 
