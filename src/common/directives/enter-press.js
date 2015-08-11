@@ -12,7 +12,7 @@
                 elm.bind('keydown', function(event) {
                     /* jshint -W117 */ /* KeyboardEvent is system event type */
                     if (event instanceof KeyboardEvent && event.keyCode === ENTER_KEY_CODE) {
-                        scope.$apply(attrs['enterPress']);
+                        scope.$apply(attrs.enterPress);
                     }
                 });
             }
