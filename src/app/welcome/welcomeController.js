@@ -45,5 +45,9 @@
                     $state.go('welcome');
                 });
         };
+
+        vm.isActive = function (stateName) {
+            return $state.current.name === stateName;
+        };
     }
 }());
