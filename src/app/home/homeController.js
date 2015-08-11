@@ -24,6 +24,8 @@
         playlistService.playlistsPromise.then(function () {
             if (vm.playlistService.playlists.length) {
                 vm.setCurrentPlaylist(vm.playlistService.playlists[0]);
+            } else {
+                humane.log('For a start - add at least one playlist');
             }
         }, function (data) {
             if (isNoChannelEroor(data.data.error)) {

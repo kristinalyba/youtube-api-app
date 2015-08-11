@@ -19,17 +19,24 @@
                 q: vm.searchText
             }, function (data) {
                 vm.searchResult = filterYoutubeChannelsAndPlaylists(data.items);
+                if ($scope.selectedPlaylist) {
+                    var promise = fillPlaylist();
 
-                var promise = fillPlaylist();
-
-                promise.then(function (playlistWithItems) {
-                    if (!$scope.selectedPlaylist.items.length) {
-                        $scope.selectedPlaylist.items = playlistWithItems.items;
-                    }
-                    vm.searchResult.forEach(function (item) {
-                        item.alreadyInList = alreadyInListBinder(item);
+                    promise.then(function (playlistWithItems) {
+                        if (!$scope.selectedPlaylist.items.length) {
+                            $scope.selectedPlaylist.items = playlistWithItems.items;
+                        }
+                        vm.searchResult.forEach(function (item) {
+                            item.alreadyInList = alreadyInListBinder(item);
+                        });
                     });
-                });
+                } else {
+                    if (playlistService.playlists.length) {
+                        humane.log('Select a playlist first');
+                    } else {
+                        humane.log('For a start - add at least one playlist');
+                    }
+                }
             });
         };
 
