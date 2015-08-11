@@ -1,8 +1,6 @@
 (function () {
     'use strict';
-    var app = angular.module('ytApp', ['common.services',
-            'ui.router', 'ui.bootstrap'
-        ]);
+    var app = angular.module('ytApp', ['common.services', 'ui.router', 'ui.bootstrap', 'directives']);
 
     app.config(['$stateProvider', '$urlRouterProvider', '$sceDelegateProvider',
         function ($stateProvider, $urlRouterProvider, $sceDelegateProvider) {
