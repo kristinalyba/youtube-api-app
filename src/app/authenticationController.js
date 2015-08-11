@@ -3,9 +3,9 @@
 
     angular
         .module('ytApp')
-        .controller('WelcomeController', ['$state', 'authorizationService', WelcomeController]);
+        .controller('AuthenticationController', ['$state', 'authorizationService', AuthenticationController]);
 
-    function WelcomeController($state, authorizationService) {
+    function AuthenticationController($state, authorizationService) {
         var vm = this;
         vm.isLoggedIn = false;
         vm.userInfo = {};
