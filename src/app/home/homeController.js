@@ -3,9 +3,9 @@
 
     angular
         .module('ytApp')
-        .controller('HomeController', ['$scope', 'playlistService', '$state', HomeController]);
+        .controller('HomeController', ['$window', '$scope', 'playlistService', '$state', HomeController]);
 
-    function HomeController($scope, playlistService, $state) {
+    function HomeController($window, $scope, playlistService, $state) {
         var vm = this;
         vm.playlistService = playlistService;
         vm.selectedPlaylist = {};
@@ -25,7 +25,24 @@
             if (vm.playlistService.playlists.length) {
                 vm.setCurrentPlaylist(vm.playlistService.playlists[0]);
             }
+        }, function (data) {
+            if (isNoChannelEroor(data.data.error)) {
+                humane.log('You need to create a YouTube channel! Click here to proceed.', {
+                    timeout: 0,
+                    clickToClose: true,
+                    addnCls: 'humane-flatty-error'
+                }, function () {
+                    $window.open('https://www.youtube.com/create_channel');
+                });
+            }
+
         });
+
+        function isNoChannelEroor(error) {
+            return error.code === 404 && _.any(error.errors, function (err) {
+                return err.location === 'channelId' && err.reason === 'channelNotFound';
+            });
+        }
 
         vm.addToPlaylist = function () {
             var newItem = {

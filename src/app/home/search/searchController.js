@@ -26,22 +26,22 @@
                     if (!$scope.selectedPlaylist.items.length) {
                         $scope.selectedPlaylist.items = playlistWithItems.items;
                     }
-                    vm.searchResult.forEach(function(item) {
+                    vm.searchResult.forEach(function (item) {
                         item.alreadyInList = alreadyInListBinder(item);
                     });
                 });
             });
         };
 
-        function fillPlaylist() {
+        function fillPlaylist() { //TODO pub-sub fix necessary on no playlists
             return $scope.selectedPlaylist.items.length ?
-                                $q.when([]) :
-                                playlistService.fillPlaylistItems($scope.selectedPlaylist);
+                $q.when([]) :
+                playlistService.fillPlaylistItems($scope.selectedPlaylist);
         }
 
         function filterYoutubeChannelsAndPlaylists(items) {
             var arr = [];
-            items.forEach(function(item) {
+            items.forEach(function (item) {
                 if (item.id.kind === 'youtube#video') {
                     arr.push(item);
                 }
@@ -60,7 +60,7 @@
         };
 
         function alreadyInListBinder(item) {
-            return function() {
+            return function () {
                 return isVideoInList(item);
             };
         }
