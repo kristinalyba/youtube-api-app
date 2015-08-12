@@ -57,6 +57,7 @@
     "globals": {
         "angular": false,
         "_": false,
-        "humane": false
+        "humane": false,
+        "confirm": false
     }
 }
