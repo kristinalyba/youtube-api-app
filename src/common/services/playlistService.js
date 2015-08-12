@@ -7,9 +7,27 @@
 
     function playlistService(PlaylistResource, PlaylistItemsResource, PubSub) {
         var svc = this;
+        var selectedPlaylistitem = null;
+        var selectedPlaylist = null;
 
         svc.playlists = [];
-        svc.playlistsPromise = null;
+
+        svc.selectedPlaylistitem = function () {
+            return selectedPlaylistitem;
+        };
+
+        svc.selectedPlaylist = function () {
+            return selectedPlaylist;
+        };
+
+        svc.selectPlaylist = function (playlist) {
+            selectedPlaylist = playlist;
+            PubSub.publish('playlist.selected', playlist);
+        };
+        svc.selectPlaylistitem = function (video) {
+            selectedPlaylistitem = video;
+            PubSub.publish('playlistitem.selected');
+        };
 
         svc.playlistsPromise = PlaylistResource.query(function playlistsLoadedCallback(data) {
             svc.playlists = data.items;
