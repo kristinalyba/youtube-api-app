@@ -39,7 +39,7 @@
         function fillPlaylist() { //TODO pub-sub fix necessary on no playlists
             return playlistService.selectedPlaylist().items.length ?
                 $q.when([]) :
-                playlistService.fillPlaylistItems(playlistService.selectedPlaylist());
+                playlistService.fillPlaylist(playlistService.selectedPlaylist());
         }
 
         function filterYoutubeChannelsAndPlaylists(items) {
