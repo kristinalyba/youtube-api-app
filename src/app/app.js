@@ -17,7 +17,9 @@
             $stateProvider
                 .state('welcome', {
                     url: '/',
-                    templateUrl: 'src/app/welcome/welcomeView.html'
+                    templateUrl: 'src/app/welcome/welcomeView.html',
+                    controller: 'WelcomeController',
+                    controllerAs: 'vm'
                 })
                 .state('home', {
                     abstract: true,

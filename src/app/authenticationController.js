@@ -3,21 +3,21 @@
 
     angular
         .module('ytApp')
-        .controller('AuthenticationController', ['$state', 'authorizationService', AuthenticationController]);
+        .controller('AuthenticationController', ['$scope', '$state', 'authorizationService', 'PubSub', AuthenticationController]);
 
-    function AuthenticationController($state, authorizationService) {
+    function AuthenticationController($scope, $state, authorizationService, PubSub) {
         var vm = this;
         vm.isLoggedIn = false;
         vm.userInfo = {};
 
         authorizationService.checkAuth().then(function () {
-            vm.isLoggedIn = true;
+            PubSub.publish('loggedIn', true);
             loadUserInfo();
         });
 
         var redirectUser = function () {
-            if (authorizationService.isLoggedIn) {
-                vm.isLoggedIn = true;
+            if (authorizationService.isLoggedIn()) {
+                PubSub.publish('loggedIn', true);
                 $state.go('home.player');
             } else {
                 $state.go('welcome');
@@ -41,13 +41,21 @@
         vm.logOut = function () {
             authorizationService.logOut()
                 .error(function (data) {
-                    vm.isLoggedIn = false;
                     $state.go('welcome');
                 });
+            PubSub.publish('loggedIn', false);
         };
 
         vm.isActive = function (stateName) {
             return $state.current.name === stateName;
         };
+
+        var cleanUpFunc = PubSub.subscribe('loggedIn', function (isLoggedIn) {
+            vm.isLoggedIn = isLoggedIn;
+        });
+
+        $scope.$on('$destroy', function () {
+            cleanUpFunc();
+        });
     }
 }());
