@@ -15,19 +15,19 @@
 </head>
 
 <body ng-app="ytApp" class="ng-cloak">
-    <nav class="navbar navbar-inverse">
-        <div class="container" ng-controller="AuthenticationController as vm">
+    <nav class="navbar navbar-inverse" ng-controller='AuthenticationController as vm'>
+        <div class="container">
             <a ui-sref="welcome" class="navbar-brand">YouTube API App</a>
 
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button class="navbar-toggle" ng-click="vm.isCollapsed = !vm.isCollapsed">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <div class="navbar-collapse collapse" ng-if="vm.isLoggedIn">
+            <div class="navbar-collapse" collapse='vm.isCollapsed' ng-if="vm.isLoggedIn">
                 <ul class="nav navbar-nav">
                     <li ng-class="{ active: vm.isActive('home.player') }"><a ui-sref="home.player">Player</a></li>
                     <li ng-class="{ active: vm.isActive('home.search') }"><a ui-sref="home.search">Search</a></li>
@@ -44,7 +44,7 @@
                     <li><a ng-click="vm.logOut()" class="clickable"><i class="glyphicon glyphicon-off"></i></a></li>
                 </ul>
             </div>
-            <div class="navbar-collapse collapse clickable" ng-if="!vm.isLoggedIn">
+            <div class="navbar-collapse clickable" collapse='vm.isCollapsed' ng-if="!vm.isLoggedIn">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a ng-click="vm.logIn()">Log In</a></li>
                 </ul>
@@ -79,6 +79,7 @@
     <script src="src/app/home/homeController.js"></script>
     <script src="src/app/home/search/searchController.js"></script>
     <script src="src/app/home/edit/editController.js"></script>
+    <script src="src/app/home/player/playerController.js"></script>
     <script src="src/app/authenticationController.js"></script>
     <script src="src/app/welcome/welcomeController.js"></script>
 

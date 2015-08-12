@@ -43,7 +43,9 @@
                 })
                 .state('home.player', {
                     url: '/player',
-                    templateUrl: 'src/app/home/player/playerView.html'
+                    templateUrl: 'src/app/home/player/playerView.html',
+                    controller: 'PlayerController',
+                    controllerAs: 'vm'
                 })
                 .state('home.search', {
                     url: '/search/:searchText',

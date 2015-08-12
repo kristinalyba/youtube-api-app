@@ -10,6 +10,8 @@
         vm.isLoggedIn = false;
         vm.userInfo = {};
 
+        vm.isCollapsed = true;
+
         authorizationService.checkAuth().then(function () {
             PubSub.publish('loggedIn', true);
             loadUserInfo();
