@@ -7,19 +7,62 @@
 
     function playlistService(PlaylistResource, PlaylistItemsResource, PubSub) {
         var svc = this;
+        var selectedPlaylistitem = null;
+        var selectedPlaylist = null;
 
         svc.playlists = [];
-        svc.playlistsPromise = null;
+        svc.playlistsPromise = getPlaylistsPromise();
 
-        svc.playlistsPromise = PlaylistResource.query(function playlistsLoadedCallback(data) {
-            svc.playlists = data.items;
-            for (var i = 0; i < svc.playlists.length; i++) {
-                svc.playlists[i].items = [];
+        svc.selectPlaylist = selectPlaylist;
+        svc.selectPlaylistitem = selectPlaylistitem;
+        svc.selectedPlaylistitem = getSelectedPlaylistitem;
+        svc.selectedPlaylist = getSelectedPlaylist;
+
+        svc.addPlaylist = addPlaylist;
+        svc.removePlaylist = removePlaylist;
+        svc.updatePlaylist = updatePlaylist;
+        svc.fillPlaylist = fillPlaylist;
+
+        svc.addItemToPlaylist = addItemToPlaylist;
+        svc.removeItemFromPlaylist = removeItemFromPlaylist;
+        svc.isItemInPlayList = isItemInPlayList;
+
+        function selectPlaylist(playlist) {
+            if (playlist === null) {
+                svc.selectPlaylistitem(null);
+            } else if (!playlist.items.length) {
+                fillPlaylistAndSelectFirstItem(playlist);
             }
-            PubSub.publish('playlists.loaded', svc.playlists);
-        }).$promise;
 
-        svc.addPlaylist = function (playlist) {
+            selectedPlaylist = playlist;
+            PubSub.publish('playlist.selected', playlist);
+        }
+
+        function selectPlaylistitem(video) {
+            if (video !== null && !video.src) {
+                video.src = 'https://www.youtube.com/embed/' +
+                    video.snippet.resourceId.videoId +
+                    '?list=' + video.snippet.playlistId;
+            }
+
+            selectedPlaylistitem = video;
+            PubSub.publish('playlistitem.selected');
+        }
+
+        function getPlaylistsPromise() {
+            return PlaylistResource.query(function playlistsLoadedCallback(data) {
+                svc.playlists = data.items;
+                for (var i = 0; i < svc.playlists.length; i++) {
+                    svc.playlists[i].items = [];
+                }
+                if (svc.playlists.length) {
+                    svc.selectPlaylist(svc.playlists[0]);
+                }
+                PubSub.publish('playlists.loaded', svc.playlists);
+            }).$promise;
+        }
+
+        function addPlaylist(playlist) {
             var newitem = new PlaylistResource({
                 snippet: playlist.snippet
             });
@@ -32,12 +75,13 @@
                     humane.log('Error adding playlist');
                     console.log(data);
                 });
-        };
+        }
 
-        svc.removePlaylist = function (playlist) {
+        function removePlaylist(playlist) {
             if (!confirm('Are you sure you want to remove playlist?')) {
                 return;
             }
+
             var deletingItem = new PlaylistResource({
                 id: playlist.id
             });
@@ -48,14 +92,17 @@
                     if (indx !== -1) {
                         svc.playlists.splice(indx, 1);
                     }
+                    if (playlist === selectedPlaylist) {
+                        selectAnotherPlaylist(indx);
+                    }
                     PubSub.publish('playlist.removed', playlist);
                 }, function playlistNotRemoved(data) {
                     humane.log('Error deleting playlist');
                     console.log(data);
                 });
-        };
+        }
 
-        svc.updatePlaylist = function (playlist) {
+        function updatePlaylist(playlist) {
             var updatingItem = new PlaylistResource({
                 id: playlist.id,
                 snippet: playlist.snippet
@@ -67,15 +114,15 @@
                 humane.log('Error updating playlist');
                 console.log(data);
             }).$promise;
-        };
+        }
 
-        svc.addItemToPlaylist = function (playlist, item) {
+        function addItemToPlaylist(playlist, videoId) {
             var newitem = new PlaylistItemsResource({
                 snippet: {
                     playlistId: playlist.id,
                     resourceId: {
                         kind: 'youtube#video',
-                        videoId: item.id.videoId
+                        videoId: videoId
                     }
                 }
             });
@@ -90,9 +137,9 @@
                 humane.log('Error adding item to playlist');
                 console.log(data);
             }).$promise;
-        };
+        }
 
-        svc.removeItemFromPlaylist = function (playlist, item) {
+        function removeItemFromPlaylist(playlist, item) {
             var deleteItem = new PlaylistItemsResource({
                 id: item.id
             });
@@ -116,9 +163,9 @@
                 humane.log('Error removing item from playlist');
                 console.log(data);
             }).$promise;
-        };
+        }
 
-        svc.fillPlaylistItems = function (playlist) {
+        function fillPlaylist(playlist) {
             return PlaylistItemsResource.query({
                 playlistId: playlist.id
             }, function (data) {
@@ -129,18 +176,43 @@
                 humane.log('Error filling the playlist');
                 console.log(data);
             }).$promise;
-        };
+        }
 
-        svc.isItemInPlayList = function (playlist, videoId) {
+        function isItemInPlayList(playlist, videoId) {
             return _.any(playlist.items, function (item) {
                 return item.snippet.resourceId.videoId === videoId;
             });
-        };
+        }
 
-        var getPlaylistIndex = function (searchItem) {
+        function getSelectedPlaylistitem() {
+            return selectedPlaylistitem;
+        }
+
+        function getSelectedPlaylist() {
+            return selectedPlaylist;
+        }
+
+        function fillPlaylistAndSelectFirstItem(playlist) {
+            svc.fillPlaylist(playlist)
+                .then(function () {
+                    if (playlist.items.length) {
+                        svc.selectPlaylistitem(playlist.items[0]);
+                    }
+                });
+        }
+
+        function selectAnotherPlaylist(indx) {
+            while (!svc.playlists[indx] && indx >= 0) {
+                indx--;
+            }
+
+            svc.selectPlaylist(indx >= 0 ? svc.playlists[indx] : null);
+        }
+
+        function getPlaylistIndex(searchItem) {
             return _.findIndex(svc.playlists, function (playlist) {
                 return playlist.id === searchItem.id;
             });
-        };
+        }
     }
 }());

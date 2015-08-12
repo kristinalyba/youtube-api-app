@@ -15,7 +15,7 @@
                 <div class="col-md-9">
                     <div dropdown class="btn-group">
                         <button dropdown-toggle class="btn btn-default" type="button" id="playlistDropdown" aria-haspopup="true" aria-expanded="true">
-                            {{vm.selectedPlaylist.snippet.title}}
+                            {{vm.playlistService.selectedPlaylist().snippet.title}}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="playlistDropdown">
@@ -44,7 +44,7 @@
         </div>
         <div class="col-md-3">
             <div class="list-group playlist-control">
-                <div ng-repeat="item in vm.selectedPlaylist.items">
+                <div ng-repeat="item in vm.playlistService.selectedPlaylist().items">
                     <div class="list-group-item playlist-item">
                         <span ng-click="vm.setCurrentPlaylistItem(item)" class="clickable">{{item.snippet.title}}</span>
                         <button type="button" class="close-button pull-right top-right-corner" ng-if="vm.isEditMode()" title="Remove playlist" ng-click="vm.removeFromPlaylist(item)">

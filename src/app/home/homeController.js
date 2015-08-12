@@ -8,9 +8,6 @@
     function HomeController($window, $scope, playlistService, $state) {
         var vm = this;
         vm.playlistService = playlistService;
-        vm.selectedPlaylist = {};
-        vm.selectedPlaylist.empty = true;
-        vm.selectedPlaylistItem = {};
         vm.searchText = '';
 
         vm.getSearchResult = function () {
@@ -23,13 +20,13 @@
 
         playlistService.playlistsPromise.then(function () {
             if (vm.playlistService.playlists.length) {
-                vm.setCurrentPlaylist(vm.playlistService.playlists[0]);
+                vm.setCurrentPlaylist(playlistService.playlists[0]);
             } else {
                 humane.log('For a start - add at least one playlist');
             }
         }, function (data) {
-            if (isNoChannelEroor(data.data.error)) {
-                humane.log('You need to create a YouTube channel! Click here to proceed.', {
+            if (isNoChannelError(data.data.error)) {
+                humane.log('You don\'t have a YouTube channel! Click here to create.', {
                     timeout: 0,
                     clickToClose: true,
                     addnCls: 'humane-flatty-error'
@@ -37,64 +34,45 @@
                     $window.open('https://www.youtube.com/create_channel');
                 });
             }
-
         });
 
-        function isNoChannelEroor(error) {
+        function isNoChannelError(error) {
             return error.code === 404 && _.any(error.errors, function (err) {
                 return err.location === 'channelId' && err.reason === 'channelNotFound';
             });
         }
 
         vm.addToPlaylist = function () {
-            var newItem = {
-                id: vm.selectedPlaylistItem
-            };
+            var videoId = playlistService.selectedPlaylistitem().snippet.resourceId.videoId;
 
-            playlistService.addItemToPlaylist(vm.selectedPlaylist, newItem);
+            playlistService.addItemToPlaylist(playlistService.selectedPlaylist(), videoId)
+                .then(function () {
+                    vm.setCurrentPlaylistItem(playlistService.selectedPlaylist().items[0]);
+                });
         };
 
         vm.removeFromPlaylist = function (item) {
             var itemToDelete = {
-                id: item ? item.id : vm.selectedPlaylistItem.id
+                id: item ? item.id : playlistService.selectedPlaylistitem().id
             };
 
-            playlistService.removeItemFromPlaylist(vm.selectedPlaylist, itemToDelete);
+            playlistService.removeItemFromPlaylist(playlistService.selectedPlaylist(), itemToDelete);
         };
 
         vm.checkIsVideoInCurrentPlaylist = function () {
-            return playlistService.isItemInPlayList(vm.selectedPlaylist, vm.selectedPlaylistItem.videoId);
+            var selectedPl = playlistService.selectedPlaylist();
+            var selectedPlItem = playlistService.selectedPlaylistitem();
+            if (selectedPl && selectedPlItem) {
+                return playlistService.isItemInPlayList(selectedPl, selectedPlItem.snippet.resourceId.videoId);
+            }
         };
 
         vm.setCurrentPlaylist = function (playlist) {
-            if (!vm.selectedPlaylist || vm.selectedPlaylist.id !== playlist.id) {
-                $scope.selectedPlaylist = playlist;
-                vm.selectedPlaylist = playlist;
-                if (!playlist.items.length) {
-                    playlistService.fillPlaylistItems(playlist)
-                        .then(function () {
-                            if (playlist.items.length) {
-                                vm.setCurrentPlaylistItem(playlist.items[0]);
-                                vm.selectedPlaylist.empty = false;
-                            } else {
-                                vm.selectedPlaylist.empty = true;
-                            }
-                        });
-                } else {
-                    vm.setCurrentPlaylistItem(playlist.items[0]);
-                }
-            }
+            playlistService.selectPlaylist(playlist);
         };
 
         vm.setCurrentPlaylistItem = function (playlistItem) {
-            if (playlistItem) {
-                vm.selectedPlaylistItem.title = playlistItem.snippet.title;
-                vm.selectedPlaylistItem.src = 'https://www.youtube.com/embed/' +
-                    playlistItem.snippet.resourceId.videoId +
-                    '?list=' + playlistItem.snippet.playlistId;
-                vm.selectedPlaylistItem.videoId = playlistItem.snippet.resourceId.videoId;
-                vm.selectedPlaylistItem.id = playlistItem.id;
-            }
+            playlistService.selectPlaylistitem(playlistItem);
         };
 
         vm.currentView = function () {
