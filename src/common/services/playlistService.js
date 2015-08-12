@@ -1,9 +1,11 @@
 (function () {
     angular
         .module('ytApp')
-        .service('playlistService', ['PlaylistResource', 'PlaylistItemsResource', playlistService]);
+        .service('playlistService', playlistService);
 
-    function playlistService(PlaylistResource, PlaylistItemsResource) {
+    playlistService.$inject = ['PlaylistResource', 'PlaylistItemsResource', 'PubSub'];
+
+    function playlistService(PlaylistResource, PlaylistItemsResource, PubSub) {
         var svc = this;
 
         svc.playlists = [];
@@ -14,6 +16,7 @@
             for (var i = 0; i < svc.playlists.length; i++) {
                 svc.playlists[i].items = [];
             }
+            PubSub.publish('playlists.loaded', svc.playlists);
         }).$promise;
 
         svc.addPlaylist = function (playlist) {
@@ -24,8 +27,10 @@
                 .then(function playlistAdded(data) {
                     data.items = [];
                     svc.playlists.splice(0, 0, data);
+                    PubSub.publish('playlist.added', data);
                 }, function playlistNotAdded(data) {
-
+                    humane.log('Error adding playlist');
+                    console.log(data);
                 });
         };
 
@@ -43,8 +48,10 @@
                     if (indx !== -1) {
                         svc.playlists.splice(indx, 1);
                     }
+                    PubSub.publish('playlist.removed', playlist);
                 }, function playlistNotRemoved(data) {
-
+                    humane.log('Error deleting playlist');
+                    console.log(data);
                 });
         };
 
@@ -54,7 +61,12 @@
                 snippet: playlist.snippet
             });
 
-            return PlaylistResource.update(updatingItem).$promise;
+            return PlaylistResource.update(updatingItem, function (data) {
+                PubSub.publish('playlist.updated', data);
+            }, function (data) {
+                humane.log('Error updating playlist');
+                console.log(data);
+            }).$promise;
         };
 
         svc.addItemToPlaylist = function (playlist, item) {
@@ -73,8 +85,10 @@
                 if (indx !== -1) {
                     svc.playlists[indx].items.splice(0, 0, data);
                 }
+                PubSub.publish('playlistitem.added', data);
             }, function itemNotAddedToPlaylist(data) {
-
+                humane.log('Error adding item to playlist');
+                console.log(data);
             }).$promise;
         };
 
@@ -83,7 +97,7 @@
                 id: item.id
             });
 
-            return PlaylistItemsResource.delete(deleteItem, function itemRemovedFromPlaylist() {
+            return PlaylistItemsResource.delete(deleteItem, function itemRemovedFromPlaylist(data) {
                 var playlistIndx = _.indexOf(svc.playlists, playlist);
                 if (playlistIndx !== -1) {
                     var itemIndx = _.findIndex(svc.playlists[playlistIndx].items,
@@ -94,8 +108,13 @@
                         svc.playlists[playlistIndx].items.splice(itemIndx, 1);
                     }
                 }
+                PubSub.publish('playlistitem.removed', {
+                    playlist: playlist,
+                    item: item
+                });
             }, function itemNotRemovedFromPlaylist(data) {
-
+                humane.log('Error removing item from playlist');
+                console.log(data);
             }).$promise;
         };
 
@@ -105,10 +124,14 @@
             }, function (data) {
                 var indx = getPlaylistIndex(playlist);
                 svc.playlists[indx].items = data.items;
+                PubSub.publish('playlist.filled', playlist);
+            }, function (data) {
+                humane.log('Error filling the playlist');
+                console.log(data);
             }).$promise;
         };
 
-        svc.isItemInPlayList = function(playlist, videoId) {
+        svc.isItemInPlayList = function (playlist, videoId) {
             return _.any(playlist.items, function (item) {
                 return item.snippet.resourceId.videoId === videoId;
             });
