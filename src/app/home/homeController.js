@@ -7,10 +7,18 @@
 
     function HomeController($window, $scope, playlistService, $state) {
         var vm = this;
-        vm.playlistService = playlistService;
         vm.searchText = '';
 
-        vm.getSearchResult = function () {
+        vm.playlistService = playlistService;
+        vm.getSearchResult = getSearchResult;
+        vm.removeFromPlaylist = removeFromPlaylist;
+        vm.setCurrentPlaylist = setCurrentPlaylist;
+        vm.setCurrentPlaylistItem = setCurrentPlaylistItem;
+        vm.currentView = currentView;
+        vm.toggleEdit = toggleEdit;
+        vm.isEditMode = isEditMode;
+
+        function getSearchResult() {
             if (vm.searchText !== '') {
                 $state.go('home.search', {
                     searchText: vm.searchText
@@ -42,46 +50,27 @@
             });
         }
 
-        vm.addToPlaylist = function () {
-            var videoId = playlistService.selectedPlaylistitem().snippet.resourceId.videoId;
-
-            playlistService.addItemToPlaylist(playlistService.selectedPlaylist(), videoId)
-                .then(function () {
-                    vm.setCurrentPlaylistItem(playlistService.selectedPlaylist().items[0]);
-                });
+        function removeFromPlaylist(item) {
+            playlistService.removeItemFromPlaylist(playlistService.selectedPlaylist(), {
+                id: item.id
+            });
         };
 
-        vm.removeFromPlaylist = function (item) {
-            var itemToDelete = {
-                id: item ? item.id : playlistService.selectedPlaylistitem().id
-            };
-
-            playlistService.removeItemFromPlaylist(playlistService.selectedPlaylist(), itemToDelete);
-        };
-
-        vm.checkIsVideoInCurrentPlaylist = function () {
-            var selectedPl = playlistService.selectedPlaylist();
-            var selectedPlItem = playlistService.selectedPlaylistitem();
-            if (selectedPl && selectedPlItem) {
-                return playlistService.isItemInPlayList(selectedPl, selectedPlItem.snippet.resourceId.videoId);
-            }
-        };
-
-        vm.setCurrentPlaylist = function (playlist) {
+        function setCurrentPlaylist(playlist) {
             playlistService.selectPlaylist(playlist);
         };
 
-        vm.setCurrentPlaylistItem = function (playlistItem) {
+        function setCurrentPlaylistItem(playlistItem) {
             playlistService.selectPlaylistitem(playlistItem);
         };
 
-        vm.currentView = function () {
+        function currentView() {
             return $state.current.name;
         };
 
         var prevView = null;
 
-        vm.toggleEdit = function () {
+        function toggleEdit() {
             if (vm.isEditMode()) {
                 $state.go(!prevView || prevView === 'home.edit' ? 'home.player' : prevView);
             } else {
@@ -90,7 +79,7 @@
             }
         };
 
-        vm.isEditMode = function () {
+        function isEditMode() {
             return vm.currentView() === 'home.edit';
         };
     }

@@ -43,9 +43,11 @@
         vm.logOut = function () {
             authorizationService.logOut()
                 .error(function (data) {
+                    PubSub.publish('loggedIn', false);
                     $state.go('welcome');
+
                 });
-            PubSub.publish('loggedIn', false);
+            PubSub.publish('loggedIn', true);
         };
 
         vm.isActive = function (stateName) {

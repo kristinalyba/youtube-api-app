@@ -3,16 +3,36 @@
 
     angular
         .module('ytApp')
-        .controller('PlayerController', ['PubSub', PlayerController]);
+        .controller('PlayerController', ['playlistService', PlayerController]);
 
-    function PlayerController(PubSub) {
+    function PlayerController(playlistService) {
         var vm = this;
+        vm.playlistService = playlistService;
+        vm.removeFromPlaylist = removeFromPlaylist;
+        vm.addToPlaylist = addToPlaylist;
+        vm.checkIsVideoInCurrentPlaylist = checkIsVideoInCurrentPlaylist;
 
-        vm.data = 'yoyo';
+        function removeFromPlaylist() {
+            playlistService.removeItemFromPlaylist(playlistService.selectedPlaylist(), {
+                id: playlistService.selectedPlaylistitem().id
+            });
+        };
 
-        PubSub.subscribe('someData', function (data) {
-            vm.data = data;
-        })
+        function addToPlaylist() {
+            var videoId = playlistService.selectedPlaylistitem().snippet.resourceId.videoId;
 
+            playlistService.addItemToPlaylist(playlistService.selectedPlaylist(), videoId)
+                .then(function () {
+                    playlistService.selectPlaylistitem(playlistService.selectedPlaylist().items[0]);
+                });
+        };
+
+        function checkIsVideoInCurrentPlaylist() {
+            var selectedPl = playlistService.selectedPlaylist();
+            var selectedPlItem = playlistService.selectedPlaylistitem();
+            if (selectedPl && selectedPlItem) {
+                return playlistService.isItemInPlayList(selectedPl, selectedPlItem.snippet.resourceId.videoId);
+            }
+        };
     }
 }());
