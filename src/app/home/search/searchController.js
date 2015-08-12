@@ -5,10 +5,10 @@
         .module('ytApp')
         .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$q', '$scope', '$stateParams',
+    SearchController.$inject = ['$q', '$stateParams',
                                 'playlistService', 'SearchResource'];
 
-    function SearchController($q, $scope, $stateParams, playlistService, SearchResource) {
+    function SearchController($q, $stateParams, playlistService, SearchResource) {
         var vm = this;
         vm.playlistService = playlistService;
         vm.searchResult = [];
@@ -19,12 +19,12 @@
                 q: vm.searchText
             }, function (data) {
                 vm.searchResult = filterYoutubeChannelsAndPlaylists(data.items);
-                if ($scope.selectedPlaylist) {
+                if (playlistService.selectedPlaylist()) {
                     var promise = fillPlaylist();
 
                     promise.then(function (playlistWithItems) {
-                        if (!$scope.selectedPlaylist.items.length) {
-                            $scope.selectedPlaylist.items = playlistWithItems.items;
+                        if (!playlistService.selectedPlaylist().items.length) {
+                            playlistService.selectedPlaylist().items = playlistWithItems.items;
                         }
                         addAlreadyInPlaylistProp();
                     });
@@ -37,9 +37,9 @@
         };
 
         function fillPlaylist() { //TODO pub-sub fix necessary on no playlists
-            return $scope.selectedPlaylist.items.length ?
+            return playlistService.selectedPlaylist().items.length ?
                 $q.when([]) :
-                playlistService.fillPlaylistItems($scope.selectedPlaylist);
+                playlistService.fillPlaylistItems(playlistService.selectedPlaylist());
         }
 
         function filterYoutubeChannelsAndPlaylists(items) {
@@ -67,11 +67,11 @@
         }
 
         function isVideoInList(searchItem) {
-            return playlistService.isItemInPlayList($scope.selectedPlaylist, searchItem.id.videoId);
+            return playlistService.isItemInPlayList(playlistService.selectedPlaylist(), searchItem.id.videoId);
         }
 
         vm.addToPlayList = function (searchItem) {
-            if (!$scope.selectedPlaylist) {
+            if (!playlistService.selectedPlaylist()) {
                 if (playlistService.playlists.length) {
                     humane.log('Select a playlist first');
                 } else {
@@ -80,7 +80,7 @@
             } else {
                 onPlayListSelected(); //TODO move to pubsub when available
                 if (!isVideoInList(searchItem)) {
-                    playlistService.addItemToPlaylist($scope.selectedPlaylist, searchItem);
+                    playlistService.addItemToPlaylist(playlistService.selectedPlaylist(), searchItem.id.videoId);
                 }
             }
         };
@@ -92,7 +92,7 @@
         }
 
         var itemIndexInPlaylist = function (searchItem) {
-            return _.findIndex($scope.selectedPlaylist.items, function (item) {
+            return _.findIndex(playlistService.selectedPlaylist().items, function (item) {
                 return item.snippet.resourceId.videoId === searchItem.id.videoId;
             });
         };
@@ -101,8 +101,8 @@
             var index = itemIndexInPlaylist(searchItem);
 
             if (index !== -1 && searchItem.alreadyInList()) {
-                playlistService.removeItemFromPlaylist($scope.selectedPlaylist,
-                    $scope.selectedPlaylist.items[index]);
+                playlistService.removeItemFromPlaylist(playlistService.selectedPlaylist(),
+                    playlistService.selectedPlaylist().items[index]);
             }
         };
 
