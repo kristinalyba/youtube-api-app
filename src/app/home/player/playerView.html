@@ -1,5 +1,5 @@
 <div class="player-container">
-    <div ng-if="!vm.selectedPlaylist.empty">
+    <div ng-if="vm.playlistService.selectedPlaylistitem() !== null">
         <div class="video-container">
             <div>
                 <iframe ng-src="{{vm.playlistService.selectedPlaylistitem().src}}" frameborder="0" allowfullscreen></iframe>
@@ -23,5 +23,5 @@
             </div>
         </div>
     </div>
-    <div ng-if="vm.selectedPlaylist.empty" class="no-video-available">No video available</div>
+    <div ng-if="vm.playlistService.selectedPlaylistitem() === null" class="no-video-available">No video selected</div>
 </div>

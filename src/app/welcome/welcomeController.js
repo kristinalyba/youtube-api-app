@@ -1,18 +1,12 @@
 (function () {
+    'use strict';
+
     angular
         .module('ytApp')
-        .controller('WelcomeController', ['$scope', 'PubSub', 'authorizationService', WelcomeController]);
+        .controller('WelcomeController', ['$scope', 'authorizationService', WelcomeController]);
 
-    function WelcomeController($scope, PubSub, authorizationService) {
-        vm = this;
+    function WelcomeController($scope, authorizationService) {
+        var vm = this;
         vm.isLoggedIn = authorizationService.isLoggedIn();
-
-        var cleanUpFunc = PubSub.subscribe('loggedIn', function (isLoggedIn) {
-            vm.isLoggedIn = isLoggedIn;
-        });
-
-        $scope.$on('$destroy', function () {
-            cleanUpFunc();
-        });
     }
 }());

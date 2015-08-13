@@ -30,6 +30,7 @@
 
         function logOut() {
             var token = GAuth.getToken().$$state.value.access_token;
+            GData.isLogin(false);
 
             return $http.jsonp(
                 revokeTokenUrl.replace('{token}', token), {
