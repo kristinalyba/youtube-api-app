@@ -8,15 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>YouTube API training app</title>
 
-    <!-- build:css styles/lib.css -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- endbuild -->
-
+    <!-- build:css styles/app.css -->
     <!-- Style sheets -->
     <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="vendor/humane/css/flatty.css" rel="stylesheet">
-    <link rel="stylesheet" href="src/styles/style.css">
+    <link href="src/styles/style.css" rel="stylesheet" >
+    <!-- endbuild -->
+
 </head>
 
 <body ng-app="ytApp" class="ng-cloak">
@@ -59,6 +57,8 @@
     <div class="container">
         <div ui-view></div>
     </div>
+
+    <!-- build:js js/app.js -->
     <!-- Library Scripts -->
     <script src="vendor/angular/angular.js"></script>
     <script src="vendor/angular/angular-resource.js"></script>
@@ -91,11 +91,7 @@
     <!-- Directives -->
     <script src="src/common/directives/directives.js"></script>
     <script src="src/common/directives/enter-press.js"></script>
-
-    <!-- build:js js/app.js -->
-    <!-- inject:dependencies:js -->
-    <!-- endinject -->
-    <!-- inject:js -->
+    <!-- inject:templates:js -->
     <!-- endinject -->
     <!-- endbuild -->
 
