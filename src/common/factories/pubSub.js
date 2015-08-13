@@ -25,6 +25,6 @@
         return {
             subscribe: subscribe,
             publish: publish
-        }
+        };
     }
 }());

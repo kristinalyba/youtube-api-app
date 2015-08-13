@@ -3,7 +3,9 @@
 
     angular
         .module('ytApp')
-        .controller('AuthenticationController', ['$scope', '$state', 'authorizationService', 'PubSub', AuthenticationController]);
+        .controller('AuthenticationController', ['$scope', '$state',
+                                                 'authorizationService', 'PubSub',
+                                                 AuthenticationController]);
 
     function AuthenticationController($scope, $state, authorizationService, PubSub) {
         var vm = this;

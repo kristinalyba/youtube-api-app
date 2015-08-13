@@ -3,9 +3,10 @@
 
     angular
         .module('ytApp')
-        .controller('HomeController', ['$window', '$scope', 'playlistService', '$state', HomeController]);
+        .controller('HomeController', ['$window', '$scope', '$state',
+                                       'playlistService', HomeController]);
 
-    function HomeController($window, $scope, playlistService, $state) {
+    function HomeController($window, $scope, $state, playlistService) {
         var vm = this;
         vm.searchText = '';
 
@@ -24,7 +25,7 @@
                     searchText: vm.searchText
                 });
             }
-        };
+        }
 
         playlistService.playlistsPromise.then(function () {
             if (vm.playlistService.playlists.length) {
@@ -54,19 +55,19 @@
             playlistService.removeItemFromPlaylist(playlistService.selectedPlaylist(), {
                 id: item.id
             });
-        };
+        }
 
         function setCurrentPlaylist(playlist) {
             playlistService.selectPlaylist(playlist);
-        };
+        }
 
         function setCurrentPlaylistItem(playlistItem) {
             playlistService.selectPlaylistitem(playlistItem);
-        };
+        }
 
         function currentView() {
             return $state.current.name;
-        };
+        }
 
         var prevView = null;
 
@@ -77,10 +78,10 @@
                 prevView = vm.currentView();
                 $state.go('home.edit');
             }
-        };
+        }
 
         function isEditMode() {
             return vm.currentView() === 'home.edit';
-        };
+        }
     }
 }());

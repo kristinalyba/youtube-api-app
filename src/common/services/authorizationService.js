@@ -29,6 +29,7 @@
         }
 
         function logOut() {
+            /* jshint -W106 */
             var token = GAuth.getToken().$$state.value.access_token;
             GData.isLogin(false);
 
@@ -42,6 +43,7 @@
         }
 
         function setAuthToken() {
+            /* jshint -W106 */
             var token = GAuth.getToken().$$state.value.access_token;
             $http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         }

@@ -61,7 +61,10 @@
         }
 
         function isVideoInList(searchItem) {
-            return playlistService.isItemInPlayList(playlistService.selectedPlaylist(), searchItem.id.videoId);
+            return playlistService.isItemInPlayList(
+                playlistService.selectedPlaylist(),
+                searchItem.id.videoId
+            );
         }
 
         function addToPlayList(searchItem) {
@@ -73,7 +76,10 @@
                 }
             } else {
                 if (!isVideoInList(searchItem)) {
-                    playlistService.addItemToPlaylist(playlistService.selectedPlaylist(), searchItem.id.videoId);
+                    playlistService.addItemToPlaylist(
+                        playlistService.selectedPlaylist(),
+                        searchItem.id.videoId
+                    );
                 }
             }
         }
