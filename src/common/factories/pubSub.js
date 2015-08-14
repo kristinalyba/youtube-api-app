@@ -3,9 +3,9 @@
 
     angular
         .module('ytApp')
-        .factory('PubSub', ['$rootScope', PubSub]);
+        .factory('pubSub', ['$rootScope', pubSub]);
 
-    function PubSub($rootScope) {
+    function pubSub($rootScope) {
         function subscribe(topic, func) {
             var cleanUpFunc = $rootScope.$on(topic, function (e, args) {
                 func(args);

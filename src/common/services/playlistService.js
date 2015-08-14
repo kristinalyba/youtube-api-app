@@ -3,9 +3,9 @@
         .module('ytApp')
         .service('playlistService', playlistService);
 
-    playlistService.$inject = ['PlaylistResource', 'PlaylistItemsResource', 'PubSub'];
+    playlistService.$inject = ['PlaylistResource', 'PlaylistItemsResource', 'pubSub'];
 
-    function playlistService(PlaylistResource, PlaylistItemsResource, PubSub) {
+    function playlistService(PlaylistResource, PlaylistItemsResource, pubSub) {
         var svc = this;
         var selectedPlaylistitem = null;
         var selectedPlaylist = null;
@@ -35,7 +35,7 @@
             }
 
             selectedPlaylist = playlist;
-            PubSub.publish('playlist.selected', playlist);
+            pubSub.publish('playlist.selected', playlist);
         }
 
         function selectPlaylistitem(video) {
@@ -46,7 +46,7 @@
             }
 
             selectedPlaylistitem = video;
-            PubSub.publish('playlistitem.selected');
+            pubSub.publish('playlistitem.selected');
         }
 
         function getPlaylistsPromise() {
@@ -58,7 +58,7 @@
                 if (svc.playlists.length) {
                     svc.selectPlaylist(svc.playlists[0]);
                 }
-                PubSub.publish('playlists.loaded', svc.playlists);
+                pubSub.publish('playlists.loaded', svc.playlists);
             }).$promise;
         }
 
@@ -70,7 +70,7 @@
                 .then(function playlistAdded(data) {
                     data.items = [];
                     svc.playlists.splice(0, 0, data);
-                    PubSub.publish('playlist.added', data);
+                    pubSub.publish('playlist.added', data);
                 }, function playlistNotAdded(data) {
                     humane.log('Error adding playlist');
                     console.log(data);
@@ -95,7 +95,7 @@
                     if (playlist === selectedPlaylist) {
                         selectAnotherPlaylist(indx);
                     }
-                    PubSub.publish('playlist.removed', playlist);
+                    pubSub.publish('playlist.removed', playlist);
                 }, function playlistNotRemoved(data) {
                     humane.log('Error deleting playlist');
                     console.log(data);
@@ -109,7 +109,7 @@
             });
 
             return PlaylistResource.update(updatingItem, function (data) {
-                PubSub.publish('playlist.updated', data);
+                pubSub.publish('playlist.updated', data);
             }, function (data) {
                 humane.log('Error updating playlist');
                 console.log(data);
@@ -132,7 +132,7 @@
                 if (indx !== -1) {
                     svc.playlists[indx].items.splice(0, 0, data);
                 }
-                PubSub.publish('playlistitem.added', data);
+                pubSub.publish('playlistitem.added', data);
             }, function itemNotAddedToPlaylist(data) {
                 humane.log('Error adding item to playlist');
                 console.log(data);
@@ -155,7 +155,7 @@
                         svc.playlists[playlistIndx].items.splice(itemIndx, 1);
                     }
                 }
-                PubSub.publish('playlistitem.removed', {
+                pubSub.publish('playlistitem.removed', {
                     playlist: playlist,
                     item: item
                 });
@@ -171,7 +171,7 @@
             }, function (data) {
                 var indx = getPlaylistIndex(playlist);
                 svc.playlists[indx].items = data.items;
-                PubSub.publish('playlist.filled', playlist);
+                pubSub.publish('playlist.filled', playlist);
             }, function (data) {
                 humane.log('Error filling the playlist');
                 console.log(data);
