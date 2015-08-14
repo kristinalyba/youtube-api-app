@@ -179,6 +179,10 @@
         }
 
         function isItemInPlayList(playlist, videoId) {
+            if (!playlist) {
+                return false;
+            }
+
             return _.any(playlist.items, function (item) {
                 return item.snippet.resourceId.videoId === videoId;
             });

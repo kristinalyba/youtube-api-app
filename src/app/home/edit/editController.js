@@ -14,6 +14,10 @@
 
         vm.playlistService = playlistService;
 
+        vm.getPlaylists = function () {
+            return playlistService.playlists;
+        };
+
         vm.addNewPlaylistAccept = function () {
             playlistService.addPlaylist(vm.newPlaylist);
             vm.toggleAddPlaylist();
