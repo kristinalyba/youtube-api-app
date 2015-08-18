@@ -33,7 +33,7 @@
                     controller: 'HomeController',
                     controllerAs: 'vm',
                     resolve: {
-                        authCheck: function (authorizationService, $state) {
+                        authCheck: ['authorizationService', '$state', function (authorizationService, $state) {
                             return authorizationService
                                 .checkAuth()
                                 .then(function () {
@@ -43,7 +43,7 @@
                                     function () {
                                         $state.go('welcome');
                                     });
-                        }
+                        }]
                     }
                 })
                 .state('home.player', {
